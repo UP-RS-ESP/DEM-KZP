@@ -2,6 +2,7 @@
 Digital Elevation Model (DEM) and KnickPointPicker (KPP) Analyzer
 
 %% Digital Elevation Model (DEM) and KnickPointPicker (KPP) processing
+
 %
 % Code developed by Al Neely and Bodo Bookhagen 10/12/2015, significantly
 % modified March-May 2016
