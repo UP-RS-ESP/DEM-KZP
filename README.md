@@ -68,9 +68,13 @@ Parameters for this script can be adjusted/changed in
 _knickpoints_parameters_X.m_.
 
 This file will output the following four shapefiles:
+
   1: <filename>_kp_bases.shp (knickpoint bases for all tributaries)
+  
   2: <filename>_kp_lips.shp (knickpoint lips for all tributaries)
+  
   3: <filename>_kp_bases_trunk.shp (knickpoint bases for trunk stream)
+  
   4: <filename>_kp_lips_trunk.shp (knickpoint lips for trunk stream)
 
 
@@ -81,40 +85,48 @@ their respective attribute name in brackets [].
 Knickpoint Database information [shapefile attribute]
 
   1: knickpoint # [1kp_id]
+  
   2: stream id # [2stream_id]
+  
   3: tributary id # [3trib_id]
+  
   4: slope of stream, bfl slope: elev/chi [4sl_str]
+  
   5: chi coordinate [5chi]
+  
   6: elevation (m) [6elev_m]
+  
   7: knickpoint magnitude, detrended elevation drop (m) [7kp_magnt]
+  
   8: Knickpoint Relief, height of knickpoint (not detrended (m)) [8kp_Rel]
+  
   9: easting (meters utm) [9Easting_m]
+  
   10: northing (meters utm) [10North_m]
+  
   11: upstream drainage area (m2) [11DA_m2]
 
-12: dist upstream (m) [12kp_DFM]
+  12: dist upstream (m) [12kp_DFM]
 
-13: knickpoint slope (elev drop/distance upstream) [13kp_slp]
+  13: knickpoint slope (elev drop/distance upstream) [13kp_slp]
 
-14: elevation drop (detrended elevation drop/distance upstream, m)
-[14kp_slp_d]
+  14: elevation drop (detrended elevation drop/distance upstream, m) [14kp_slp_d]
 
-15: knickpoint slope (detrended elevation drop/chi) [15kp_slp_dt/c]
+  15: knickpoint slope (detrended elevation drop/chi) [15kp_slp_dt/c]
 
-16: knickpoint length (distance usptream, m) [16kp_len_m]
+  16: knickpoint length (distance usptream, m) [16kp_len_m]
 
-17: sgolay smoothing window size (grid cells) [17sgol_smv]
+  17: sgolay smoothing window size (grid cells) [17sgol_smv]
 
-18: knickpoint lumping search window size (grid cells) [18kp_lm_ws]
+  18: knickpoint lumping search window size (grid cells) [18kp_lm_ws]
 
-19: minimum knickkpoint size pre-lumping [19kp_pr_lu]
+  19: minimum knickkpoint size pre-lumping [19kp_pr_lu]
 
-20: minimum knickpoint size post-lumping (final minimum knickpoitn size)
-[20kp_pt_lu]
+  20: minimum knickpoint size post-lumping (final minimum knickpoitn size) [20kp_pt_lu]
 
-21: minimum steepness anomaly [21kp_stp_a]
+  21: minimum steepness anomaly [21kp_stp_a]
 
-22: minimum stream size for analysis (cells) [22strea_sz]
+  22: minimum stream size for analysis (cells) [22strea_sz]
 
 #In order to process a DEM and identify Knickpoints, follow these steps:
 (1) Load DEM file and other data from preprocessing
