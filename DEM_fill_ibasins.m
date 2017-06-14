@@ -278,13 +278,9 @@ for i = 1:length(fill_values)
     idx2remove = find([DEM_DIF_bw_basins_stats.MeanIntensity] == 0);
     if ~isempty(idx2remove)
         DEM_DIF_bw_basins_stats(idx2remove) = [];
-    end
-    
-    idx2remove = find([DEM_DIF_bw_basins_topo_stats.MeanIntensity] == 0);
-    if ~isempty(idx2remove)
         DEM_DIF_bw_basins_topo_stats(idx2remove) = [];
     end
-    
+        
     %DEM_DIF_bw_basins_stats(1) = [];
     %fill only cells with area < 0.1 km^2
     area_threshold_pixels = ceil(area_threshold_a / (DEM2.cellsize^2));
@@ -304,7 +300,9 @@ for i = 1:length(fill_values)
         DEM_SINKS(sink_list) = 1;
     end
     idx = find([DEM_DIF_bw_basins_stats.Area] < area_threshold_pixels);
-    DEM_DIF_bw_basins_stats(idx) = []; DEM_DIF_bw_basins_topo_stats(idx) = [];
+    if length(idx) > 1
+        DEM_DIF_bw_basins_stats(idx) = []; DEM_DIF_bw_basins_topo_stats(idx) = [];
+    end
     DEM_SINKS_list(:,:,i) = DEM_SINKS;
     
     %merge original basins and SINK mask

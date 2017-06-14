@@ -3,7 +3,7 @@ function [AOI_FIL, AOI_FD, AOI_FAC, AOI_STR_w, AOI_mg, AOI_rivers_STR, ...
     AOI_FAC_w, AOI_rivers_slope, AOI_rivers_area, AOI_rivers_w] = ...
     DEM_preprocess(AOI_DEM, REGEN, dir_sep, gdaldem_cmd, DEM_FIL_fname, ...
     DEM_FAC_fname, DEM_basename, area_threshold, min_str_gradient, ...
-    str_area1, str_area2, min_drainage_area_to_process, MISC_FILES)
+    str_area1, str_area2, min_drainage_area_to_process, geotiff_dirname, MISC_FILES)
 %
 % preprocess and hydrologically correct DEM
 % fill sinks in DEM:
@@ -17,9 +17,9 @@ if MISC_FILES == 1
 end
 if MISC_FILES == 1
     fprintf(1,'\tgenerating hillshade image from DEM using gdaldem\n');
-    if exist(sprintf('geotiff%s%s%s', dir_sep, DEM_basename, '_hs.tif'), 'file') ~= 2 || REGEN == 1
+    if exist(sprintf('%s%s%s%s', geotiff_dirname, dir_sep, DEM_basename, '_hs.tif'), 'file') ~= 2 || REGEN == 1
         eval([gdaldem_cmd, ' hillshade ', sprintf('%s%s', DEM_basename, '.tif'), ' ', ...
-            sprintf('geotiff%s%s%s', dir_sep, DEM_basename, '_hs.tif')]);
+            sprintf('%s%s%s%s', geotiff_dirname, dir_sep, DEM_basename, '_hs.tif')]);
     end
 end
 

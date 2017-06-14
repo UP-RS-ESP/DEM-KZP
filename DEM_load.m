@@ -1,6 +1,6 @@
 function [AOI_DEM, AOI_x, AOI_y] = DEM_load(DEM_fname, DEM_MAT_fname)
-% load GeoTIFF and import into Matlab space
-% use Topotoolbox GRIDobj
+% load GeoTIFF and import into Matlab space. Generate a UTM-X and UTM-Y
+% grid. Use Topotoolbox GRIDobj
 %
 
 % Matlab file does not exist, create
@@ -19,10 +19,27 @@ end
 if exist('idx0', 'var') ~= 0
     AOI_DEM.Z(idx0) = NaN;
 end
-utm_x1 = AOI_DEM.georef.BoundingBox(1);
-utm_x2 = AOI_DEM.georef.BoundingBox(2);
-utm_y1 = AOI_DEM.georef.BoundingBox(3);
-utm_y2 = AOI_DEM.georef.BoundingBox(4);
+
+try
+    utm_x1 = AOI_DEM.georef.BoundingBox(1);
+catch ME
+    switch ME.identifier
+        case 'MATLAB:nonExistentField'
+            fprintf('No BoundingBox, using XWorldLimits and YWorldLimits.\n');
+            utm_x1 = AOI_DEM.georef.SpatialRef.XWorldLimits(1);
+            utm_x2 = AOI_DEM.georef.SpatialRef.XWorldLimits(2);
+            utm_y1 = AOI_DEM.georef.SpatialRef.YWorldLimits(1);
+            utm_y2 = AOI_DEM.georef.SpatialRef.YWorldLimits(2);
+    end
+    
+    if exist('utm_x1') == 0
+        utm_x1 = AOI_DEM.georef.BoundingBox(1);
+        utm_x2 = AOI_DEM.georef.BoundingBox(2);
+        utm_y1 = AOI_DEM.georef.BoundingBox(3);
+        utm_y2 = AOI_DEM.georef.BoundingBox(4);
+    end
+end
+
 
 [AOI_x, AOI_y] = meshgrid(utm_x1:AOI_DEM.cellsize:utm_x2-AOI_DEM.cellsize, ...
     utm_y1:AOI_DEM.cellsize:utm_y2-AOI_DEM.cellsize);
