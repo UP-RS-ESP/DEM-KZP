@@ -1123,13 +1123,13 @@ string2write = sprintf(['<OGRVRTDataSource>\n  <OGRVRTLayer name=\"%s\">\n', ...
     kp_lips_fn);
 fwrite(lips_FID, string2write);
 fclose(lips_FID);
-if exist(strcat(sprintf('shapefiles%s', KZP_parameters.dir_sep), kp_lips_shapeout_fn), 'file') ~= 2
+if exist(strcat(sprintf('%s%s',  KZP_parameters.KZP_shapefile_dirname,KZP_parameters.dir_sep), kp_lips_shapeout_fn), 'file') ~= 2
     eval([KZP_parameters.gdalsrsinfo_cmd, ' -o wkt ', KZP_parameters.DEM_fname, '> projection.prj']);
     eval([KZP_parameters.ogr2ogr_cmd, ' -s_srs projection.prj -t_srs projection.prj -f "ESRI Shapefile" ', ...
         kp_lips_shapeout_fn, ' ', kp_lips_crt_fn, ' 2> ', kp_lips_shapeout_fn_out]);
 end
 if exist(kp_lips_shapeout_fn_all, 'file') ~= 2
-    eval([KZP_parameters.mv_cmd, ' ', kp_lips_shapeout_fn_all, ' ', sprintf('shapefiles%s', KZP_parameters.dir_sep)]);
+    eval([KZP_parameters.mv_cmd, ' ', kp_lips_shapeout_fn_all, ' ', sprintf('%s%s', KZP_parameters.KZP_shapefile_dirname, KZP_parameters.dir_sep)]);
 end
 
 kp_bases_shapeout_fn = strcat(KZP_parameters.DEM_basename_nodir, '_kp_bases_trunk.shp');
@@ -1168,13 +1168,13 @@ string2write = sprintf(['<OGRVRTDataSource>\n  <OGRVRTLayer name=\"%s\">\n', ...
     strcat(KZP_parameters.DEM_basename_nodir, '_kp_bases_trunk'), kp_bases_fn);
 fwrite(bases_FID, string2write);
 fclose(bases_FID);
-if exist(strcat(sprintf('shapefiles%s', KZP_parameters.dir_sep), kp_bases_shapeout_fn), 'file') ~= 2
+if exist(strcat(sprintf('%s%s', KZP_parameters.KZP_shapefile_dirname, KZP_parameters.dir_sep), kp_bases_shapeout_fn), 'file') ~= 2
     eval([KZP_parameters.gdalsrsinfo_cmd, ' -o wkt ', KZP_parameters.DEM_fname, '> projection.prj']);
     eval([KZP_parameters.ogr2ogr_cmd, ' -s_srs projection.prj -t_srs projection.prj -f "ESRI Shapefile" ', ...
         kp_bases_shapeout_fn, ' ', kp_bases_crt_fn, ' 2> ', kp_bases_shapeout_fn_out]);
 end
 if exist(kp_lips_shapeout_fn_all, 'file') ~= 2
-    eval([KZP_parameters.mv_cmd, ' ', kp_bases_shapeout_fn_all, ' ', sprintf('shapefiles%s', KZP_parameters.dir_sep)]);
+    eval([KZP_parameters.mv_cmd, ' ', kp_bases_shapeout_fn_all, ' ', sprintf('%s%s', KZP_parameters.KZP_shapefile_dirname,KZP_parameters.dir_sep)]);
 end
 
 % verify if crt file is correctly formatted:

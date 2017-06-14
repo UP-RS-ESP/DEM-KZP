@@ -7,7 +7,7 @@ if KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
 fprintf(1,'KZP identifying knickzones step 4 of 4: Making figures for all basins.\nAt basin # of %d: ', number_of_basins);
     for i = 1:number_of_basins2
         fprintf('%d, ', i);
-        knickpoints_plot_fname = sprintf('plots/%s_basin_%d_knickpoints.pdf', KZP_parameters.DEM_basename_nodir, i);
+        knickpoints_plot_fname = sprintf('%s%s%s_basin_%d_knickpoints.pdf', KZP_parameters.KZP_plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
         if exist(knickpoints_plot_fname, 'file') == 2
             continue
         end
@@ -184,9 +184,15 @@ fprintf(1,'KZP identifying knickzones step 4 of 4: Making figures for all basins
         
         subplot(2,2,4,'align')
         hold on
-        for k = 1: length(sig_kps_magnitude_tribs_current_trib_t);  % plot each knickpoint seperately ( # of kps in that trib = length of sig_kps_magnitude_tribs_current_trib )
-            plot(sig_kps_distance_tribs_current_trib_t(k), sig_kps_elevation_tribs_current_trib_t(k), 'r.','MarkerSize',(sig_kps_magnitude_tribs_current_trib_t(k)/sig_kps_magnitude_all_tribs_all_kp_size_current_basin_max * KZP_parameters.max_knickpointsize2plot)); % size of knickpoint marker is relative to kp_magnitude value
-            plot(troughs_distance_all_tribs_current_basin_t(k),troughs_elevation_tribs_current_trib_t(k),'bs','MarkerSize',(sig_kps_magnitude_tribs_current_trib_t(k)/sig_kps_magnitude_all_tribs_all_kp_size_current_basin_max * KZP_parameters.max_knickpointsize2plot)) % size of knickpoint marker is relative to kp_magnitude value
+        for k = 1:length(sig_kps_magnitude_tribs_current_trib_t);  % plot each knickpoint seperately ( # of kps in that trib = length of sig_kps_magnitude_tribs_current_trib )
+            if ~isempty(sig_kps_distance_tribs_current_trib_t(k))
+                plot(sig_kps_distance_tribs_current_trib_t(k), sig_kps_elevation_tribs_current_trib_t(k), 'r.','MarkerSize',(sig_kps_magnitude_tribs_current_trib_t(k)/sig_kps_magnitude_all_tribs_all_kp_size_current_basin_max * KZP_parameters.max_knickpointsize2plot)); % size of knickpoint marker is relative to kp_magnitude value
+            end
+            if k <= length(troughs_distance_all_tribs_current_basin_t)
+                if ~isempty(troughs_distance_all_tribs_current_basin_t(k))
+                    plot(troughs_distance_all_tribs_current_basin_t(k),troughs_elevation_tribs_current_trib_t(k),'bs','MarkerSize',(sig_kps_magnitude_tribs_current_trib_t(k)/sig_kps_magnitude_all_tribs_all_kp_size_current_basin_max * KZP_parameters.max_knickpointsize2plot)) % size of knickpoint marker is relative to kp_magnitude value
+                end
+            end
         end
         
         
@@ -237,7 +243,7 @@ fprintf(1,'KZP identifying knickzones step 4 of 4: Making figures for all basins
         end
         
         % Save to PDF
-        knickpoints_plot_fname = sprintf('plots/%s_basin_%d_knickpoints.pdf', KZP_parameters.DEM_basename_nodir, i);
+        knickpoints_plot_fname = sprintf('%s%s%s_basin_%d_knickpoints.pdf', KZP_parameters.KZP_plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
         if exist(knickpoints_plot_fname, 'file') ~= 2
             export_fig(knickpoints_plot_fname,KZP_parameters.quality_flag,'-pdf');
         end

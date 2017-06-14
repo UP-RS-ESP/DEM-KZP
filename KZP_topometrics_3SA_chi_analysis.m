@@ -377,8 +377,8 @@ if ~isnan(AOI_dbasins_unique_nr)
         
         if KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
             figure
-            slope_area_plot_fname = sprintf('plots/%s_basin_%d_sa.pdf', ...
-                KZP_parameters.DEM_basename_nodir, i);
+            slope_area_plot_fname = sprintf('%s%s%s_basin_%d_sa.pdf', ...
+                KZP_parameters.plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
             if exist(slope_area_plot_fname, 'file') ~= 2
                 subplot(2,1,1,'align')
                 set(gcf,'units','normalized','position',[0 0 1 1]);
@@ -446,8 +446,8 @@ if ~isnan(AOI_dbasins_unique_nr)
                 end
             end
             
-            slope_area_map_fname = sprintf('maps/%s_basin_%d_ksn.pdf', ...
-                KZP_parameters.DEM_basename_nodir, i);
+            slope_area_map_fname = sprintf('%s%s%s_basin_%d_ksn.pdf', ...
+                KZP_parameters.plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
             if exist(slope_area_map_fname, 'file') ~= 2
                 figure
                 symbolspec_ksn045 = makesymbolspec('line',...

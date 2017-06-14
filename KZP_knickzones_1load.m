@@ -9,22 +9,13 @@ end
 warning('off');
 
 % Generate DEMs
-if (exist(KZP_parameters.KZP_csv_dirname, 'dir') ~= 7)
-    mkdir(KZP_parameters.KZP_csv_dirname)
-end
-
-if (exist(KZP_parameters.shapefile_dirname, 'dir') ~= 7)
-    mkdir(KZP_parameters.shapefile_dirname)
+if (exist(KZP_parameters.KZP_shapefile_dirname, 'dir') ~= 7)
+    mkdir(KZP_parameters.KZP_shapefile_dirname)
 end
 
 if (exist(KZP_parameters.KZP_plots_dirname, 'dir') ~= 7)
     mkdir(KZP_parameters.KZP_plots_dirname)
 end
-
-if (exist(KZP_parameters.plots_dirname, 'dir') ~= 7)
-    mkdir(KZP_parameters.plots_dirname)
-end
-
 
 if exist(KZP_parameters.DEM_MAT_fname, 'file') == 2
     if exist('AOI_DEM', 'var') ~= 1
