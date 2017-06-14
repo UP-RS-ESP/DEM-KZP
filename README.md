@@ -1,10 +1,10 @@
-# DEM-KPP
-Digital Elevation Model (DEM) and KnickPointPicker (KPP) processing
+# DEM-KZP
+Digital Elevation Model (DEM) and KnickZone Picker (KZP) processing
 
 Code developed by Al Neely and Bodo Bookhagen 10/12/2015, significantly
-modified March-May 2016
+modified March-May 2016, and May 2017
 
-The code has been tested with Matlab R2012b, R2014b and R2015b. 
+The code has been tested with Matlab R2012b, R2014b and R2015b, R2016b, R2017a. 
 It requires the Statistical Toolbox, the Topotoolbox, and 
 export_fig (see below). If the Curve Fitting 
 Toolbox is available, it will be used (_smooth_). If no Curve Fitting 
@@ -52,12 +52,12 @@ you may have to change the directory locations in the parameter file.
 We rely on: _ogr2ogr_, _gdalsrsinfo_, _gdal_dem_,
 _gdal_polygonize_.
 
-5. Install the _KnickPointPicker_ (KPP) code and subdirectories and add
-the KPP directory to the Matlab PATH.
+5. Install the _KnickZonePicker_ (KZP) code and subdirectories and add
+the KZP directory to the Matlab PATH. You can use _addpath_ or the GUI.
 
 
 This Matlab code takes MAT file written by
-_KPP_topometrics_v1.m_ and calculates knickpoints and
+_KZP_topometrics_v1.m_ and calculates knickpoints and
 additional attributes from _chi-plot_ analysis. It will write several
 shapefiles and csv files that can be read into any GIS software.
 
@@ -130,13 +130,13 @@ Knickpoint Database information [shapefile attribute]
 
 #In order to process a DEM and identify Knickpoints, follow these steps:
 (1) Load DEM file and other data from preprocessing
-KPP_processing_1load_v1
+KZP_processing_1load_v1
 
 (2) Iterate through all basin tributaries and extract knickpoints
-KPP_processing_2kpp_tribs
+KZP_processing_2kpp_tribs
 
 (3) Iterate through all trunk streams and pull out knickpoints
-KPP_processing_3kpp_trunks
+KZP_processing_3kpp_trunks
 
 (4) Generate figures for each basin
-KPP_processing_4kpp_mkfigs
+KZP_processing_4kpp_mkfigs
