@@ -92,6 +92,7 @@
 format long g
 
 % set current directory as 'oldfolder'
+oldfolder = pwd;
 
 % load attribute table for the calibration knickzone lips. ROW 1
 % is assumed to be the header! so starts reading at ROW 2!!!!!!
@@ -406,13 +407,13 @@ hdr = {'1kp_id', '2stream_id', '3ksn_SA', '4ks_chi', '5m_n', '6trib_id', ...
 kp_lips_fn = strcat('kp_lips_best_fit_RS.csv');
 %give filename
 
-cd([oldfolder '/calib_lips/']);
+cd([oldfolder '\calib_lips\']);
 fid = fopen(kp_lips_fn, 'w');
 fprintf(fid, txt);
 fclose(fid);
 
 % write .csv file containing knickzone lip information for
 % current parameters
-dlmwrite([oldfolder '/calib_lips/',kp_lips_fn],Best_Fit_RS_lips,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
+dlmwrite([oldfolder '\calib_lips\',kp_lips_fn],Best_Fit_RS_lips,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
 
 cd(oldfolder)

@@ -1,17 +1,17 @@
-# DEM-KZP
+# DEM-Topo-Picker (DEM-KZP)
 Digital Elevation Model (DEM) and KnickZone Picker (KZP) processing
 
 Code developed by Al Neely and Bodo Bookhagen 10/12/2015, significantly
-modified March-May 2016, and May 2017
+modified March-May 2016, and July 2017
 
 The code has been tested with Matlab R2012b, R2014b and R2015b, R2016b, R2017a. 
 It requires the Statistical Toolbox, the Topotoolbox, and 
 export_fig (see below). If the Curve Fitting 
 Toolbox is available, it will be used (_smooth_). If no Curve Fitting 
 Toolbox is available, _sgolayfilt_ is used (with similar and comparable 
-results).
+results). It has been tested on Windows 7, Windows 10, and Ubuntu 16.04 LTS.
 
-*Installation*
+## Installation
 
 Before running the code and taking advantage of all feautres (i.e.,
 high-resolution figures and projected shapefile), you will need to
@@ -55,7 +55,7 @@ _gdal_polygonize_.
 5. Install the _KnickZonePicker_ (KZP) code and subdirectories and add
 the KZP directory to the Matlab PATH. You can use _addpath_ or the GUI.
 
-
+## Processing
 This Matlab code takes MAT file written by
 _KZP_topometrics_v1.m_ and calculates knickpoints and
 additional attributes from _chi-plot_ analysis. It will write several
@@ -128,7 +128,7 @@ Knickpoint Database information [shapefile attribute]
 
   22: minimum stream size for analysis (cells) [22strea_sz]
 
-#In order to process a DEM and identify Knickpoints, follow these steps:
+In order to process a DEM and identify Knickpoints, follow these steps:
 (1) Load DEM file and other data from preprocessing
 KZP_processing_1load_v1
 
@@ -140,3 +140,5 @@ KZP_processing_3kpp_trunks
 
 (4) Generate figures for each basin
 KZP_processing_4kpp_mkfigs
+
+# Examples

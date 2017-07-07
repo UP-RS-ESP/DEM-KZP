@@ -2,9 +2,6 @@
 
 % Follow brief instructions provided to input parameter values
 
-% refer to "Neely..." if interested in the specific function of smoothing 
-% and filtering parameters
-
 %% Name Parameters
 DEM_basename = 'smugglers_1m_dem'; 
 % Filename before '.tif' extension of DEM to analyze

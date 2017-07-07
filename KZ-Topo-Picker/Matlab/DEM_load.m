@@ -1,6 +1,6 @@
-function [AOI_DEM, AOI_x, AOI_y] = A1_DEM_load(DEM_fname, DEM_MAT_fname)
-% load GeoTIFF and import into Matlab space
-% use Topotoolbox GRIDobj
+function [AOI_DEM, AOI_x, AOI_y] = DEM_load(DEM_fname, DEM_MAT_fname)
+% load GeoTIFF and import into Matlab space. Generate a UTM-X and UTM-Y
+% grid. Use Topotoolbox GRIDobj
 %
 
 % Matlab file does not exist, create
@@ -19,6 +19,7 @@ end
 if exist('idx0', 'var') ~= 0
     AOI_DEM.Z(idx0) = NaN;
 end
+
 try
     utm_x1 = AOI_DEM.georef.BoundingBox(1);
 catch ME
@@ -38,6 +39,7 @@ catch ME
         utm_y2 = AOI_DEM.georef.BoundingBox(4);
     end
 end
+
 
 [AOI_x, AOI_y] = meshgrid(utm_x1:AOI_DEM.cellsize:utm_x2-AOI_DEM.cellsize, ...
     utm_y1:AOI_DEM.cellsize:utm_y2-AOI_DEM.cellsize);

@@ -145,8 +145,30 @@
 %       and parameter values only weighting the accuracy of measured geometry 
 %       of knickzones as well as spatial agreement
 %
+%% (0) setup paths and environment
+%getting latest topotoolbox from: https://github.com/wschwanghart/topotoolbox
+%git clone https://github.com/wschwanghart/topotoolbox
+%!adjust the following to match your location!
+addpath('/home/bodo/Dropbox/Matlab-work/topotoolbox','genpath')
+
+%getting latest KZ-Picker code from https://github.com/UP-RS-ESP/DEM-KZP/tree/master/KZ-Picker/Matlab
+%git clone https://github.com/UP-RS-ESP/DEM-KZP/tree/master/KZ-Picker/Matlab
+%!adjust the following to match your location!
+addpath('/home/bodo/Dropbox/Matlab-work/DEM-KZP/KZ-Picker/Matlab')
+
+%edit PARAMETERS_INPUTS_KZ_picker.m to set input and output filenames and
+%parameters. Here, parameters are set for the example from the smugglers_1m_dem
+%this example file is available at https://www.dropbox.com/s/kpujj3mfezzd34b/smugglers_1m.7z?dl=0
+%or https://boxup.uni-potsdam.de/index.php/f/38152339
+PARAMETERS_INPUTS_KZ_picker
+
 %% (1) Load parameter file and prepare DEM
 %
+%change to directory with data and start processing
+cd /home/bodo/Dropbox/Matlab-work/KZP-examples/SCI-1m-smugglers
+%extract archive
+!7z e smugglers_1m.7z
+
 A_KZ_topometrics_1load_v1
 
 %% (2) Calculate flow direction and flow accumulation and choose basins to analyze
@@ -165,6 +187,7 @@ D_KZ_masking_DBs
 
 %% (5-Calibration) If calibration option is selected (NOTE: THIS STEP IS SLOW!)
 
+oldfolder = pwd;
 if Calibration_option == 1
     % run calibration scripts and do not run the processing scripts
     E_calib_KZ_calibration_I
