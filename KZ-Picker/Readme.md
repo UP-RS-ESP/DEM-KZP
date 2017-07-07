@@ -6,7 +6,7 @@ Neely, A., Bookhagen B., Burbank, D.W. (2017): An automated knickzone selection 
 http://onlinelibrary.wiley.com/doi/10.1002/2017JF004250/full
 
 Code developed by Al Neely (abn5031@psu.edu) and Bodo Bookhagen (bodo.bookhagen@uni-potsdam.de)
-Latest update: 7-July-2017
+Latest update: 7-July-2017 (BB)
 
 The code was tested on a Ubuntu 16.04 LTS and Windows 7 operating system with Matalb R2015a and Matlab R2016b
 
@@ -23,9 +23,13 @@ Before running the code, you will need to install the additional items:
 
 1. Edit the 'PARAMETERS_INPUTS_KZ_picker' to set input and output filenames. Then use MASTER_RUN_KZ.m to process the DEM. There are additional information in the beginning of the MASTER_RUN_KZ.m file.
 
+There is a set of files generated that can be loaded in ArcMap/QGIS or a similar GIS.
+
+
 ## Examples
-There exists an example dataset at containing a 1-m DEM of a part of Santa Cruz Island, southern California: smugglers_1m_dem.
-This example file is available at https://www.dropbox.com/s/kpujj3mfezzd34b/smugglers_1m.7z?dl=0 or https://boxup.uni-potsdam.de/index.php/f/38152339
+There exists an example dataset at containing a 1-m DEM of a part of Santa Cruz Island, southern California: _smugglers_1m_dem.7z_.
+This example GeoTIF file is available at https://www.dropbox.com/s/kpujj3mfezzd34b/smugglers_1m.7z?dl=0 or https://boxup.uni-potsdam.de/index.php/f/38152339
+
 
 ## Additional information
 BEFORE using your DEM with this script, make sure that you use a projected coordinate system. We strongly suggest to use an UTM or other

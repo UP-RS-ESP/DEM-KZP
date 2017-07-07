@@ -1,6 +1,14 @@
 %% Select Knickzones Using the Chi and Elevation Information from each Basin
 
+mkdir maps_and_chi_plots;
+mkdir csv_KZ_databases;
+
 fprintf(1,'step 4 of 4: Selecting Knickzones' )
+try
+    number_of_basins = length(basin_index);
+catch ME
+    number_of_basins = 1;
+end
 
 for i = 1:number_of_basins
     % record the maximum elevation of the entire streamobj (needed for
@@ -283,7 +291,7 @@ for i = 1:number_of_basins
         %% New function interpolates chi-elev data
             % interpolates the points in the chiplot because the chi 
             % values do not increase with constant intervals between 
-            % successive values.  You shouldn’t use a Savitzky Golay 
+            % successive values.  You shouldnï¿½t use a Savitzky Golay 
             % filter on data that has a different stepsize between data
             % values, so the data must be interpolated over a constant 
             % measurement interval
@@ -859,14 +867,14 @@ if ~isempty(kz_up_da_all_tribs_lips)
         % specify filename for knickzone lips
         kp_lips_fn = strcat('kp_lips_basin', str_basin_id,'.csv');             
         %give filename
-        cd([oldfolder,'\csv_KZ_databases\'])
+        cd([oldfolder,'/csv_KZ_databases/'])
         fid = fopen(kp_lips_fn, 'w');
         fprintf(fid, txt);
         fclose(fid);
 
         % write .csv file containing knickzone lip information for
         % current parameters (need one row offset for the header)
-        dlmwrite([oldfolder,'\csv_KZ_databases\',kp_lips_fn],Knickpoint_Database_Lips_CB,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
+        dlmwrite([oldfolder,'/csv_KZ_databases/',kp_lips_fn],Knickpoint_Database_Lips_CB,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
         
         % specify filename for knickzone bases
         kp_bases_fn = strcat('kp_bases_basin', str_basin_id,'.csv');             
@@ -878,7 +886,7 @@ if ~isempty(kz_up_da_all_tribs_lips)
         
         % write .csv file containing knickzone lip information for
         % current parameters
-        dlmwrite([oldfolder,'\csv_KZ_databases\',kp_bases_fn],Knickpoint_Database_Bases_CB,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
+        dlmwrite([oldfolder,'/csv_KZ_databases/',kp_bases_fn],Knickpoint_Database_Bases_CB,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
         
         cd(oldfolder); % return to working directory
     end
@@ -911,14 +919,14 @@ Knickpoint_Database_Bases = horzcat (kz_num_stored,stream_id_all,...
 % specify filename for knickzone lips
 kp_lips_fn = strcat('kz_lips_all','.csv');             
 %give filename
-cd([oldfolder,'\csv_KZ_databases\'])
+cd([oldfolder,'/csv_KZ_databases/'])
 fid = fopen(kp_lips_fn, 'w');
 fprintf(fid, txt);
 fclose(fid);
 
 % write .csv file containing knickzone lip information for
 % current parameters (need one row offset for the header)
-dlmwrite([oldfolder,'\csv_KZ_databases\',kp_lips_fn],Knickpoint_Database_Lips,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
+dlmwrite([oldfolder,'/csv_KZ_databases/',kp_lips_fn],Knickpoint_Database_Lips,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
 
 % specify filename for knickzone bases
 kp_bases_fn = strcat('kp_bases_all','.csv');             
@@ -930,7 +938,7 @@ fclose(fid);
 
 % write .csv file containing knickzone lip information for
 % current parameters
-dlmwrite([oldfolder,'\csv_KZ_databases\',kp_bases_fn],Knickpoint_Database_Bases,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
+dlmwrite([oldfolder,'/csv_KZ_databases/',kp_bases_fn],Knickpoint_Database_Bases,'-append','delimiter',',', 'precision', '%.5f','roffset',1);
 
 cd(oldfolder); 
     

@@ -2,7 +2,8 @@
 %
 % Automatic calculation of landscape topometric values and extracting of
 % knickpoint locations by Bodo Bookhagen (bodo.bookhagen@uni-potsdam.de) on
-% 11/09/2015.
+% 11/09/2015. Updated in July 2017.
+%
 % KZ Picker (KZP) script by Al Neely (abn@umail.ucsb.edu) and Bodo
 % Bookhagen (bodo.bookhagen@uni-potsdam.de).
 %

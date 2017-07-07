@@ -149,7 +149,7 @@
 %getting latest topotoolbox from: https://github.com/wschwanghart/topotoolbox
 %git clone https://github.com/wschwanghart/topotoolbox
 %!adjust the following to match your location!
-addpath('/home/bodo/Dropbox/Matlab-work/topotoolbox','genpath')
+addpath(genpath('/home/bodo/Dropbox/Matlab-work/topotoolbox'))
 
 %getting latest KZ-Picker code from https://github.com/UP-RS-ESP/DEM-KZP/tree/master/KZ-Picker/Matlab
 %git clone https://github.com/UP-RS-ESP/DEM-KZP/tree/master/KZ-Picker/Matlab
@@ -167,17 +167,18 @@ PARAMETERS_INPUTS_KZ_picker
 %change to directory with data and start processing
 cd /home/bodo/Dropbox/Matlab-work/KZP-examples/SCI-1m-smugglers
 %extract archive
-!7z e smugglers_1m.7z
+%!7z x smugglers_1m.7z
+orgfolder = pwd;
 
 A_KZ_topometrics_1load_v1
 
 %% (2) Calculate flow direction and flow accumulation and choose basins to analyze
 %
-% (REQUIRES USER INPUT)
 B_KZ_topometrics_2preprocessing_v1
 
 %% (3) Mask DEM according to drainage basins selected for processing
-
+% (REQUIRES USER INPUT)
+%
 C_KZ_drainage_basin_plot_and_select
 
 %% (4) Use selections from data cursor to mask draiange basins of interest 
@@ -185,27 +186,24 @@ C_KZ_drainage_basin_plot_and_select
 % Export slope-area figures
 D_KZ_masking_DBs
 
-%% (5-Calibration) If calibration option is selected (NOTE: THIS STEP IS SLOW!)
+%% (5-Calibration) If calibration option is selected (NOTE: THIS STEP IS SLOW AND USUALLY ONLY NEEDS TO BE RUN ONCE!)
+oldfolder = orgfolder;
 
-oldfolder = pwd;
 if Calibration_option == 1
     % run calibration scripts and do not run the processing scripts
     E_calib_KZ_calibration_I
     
-        if do_you_have_calibration_KZ_bases == 1
-            
+    if do_you_have_calibration_KZ_bases == 1
         F_calib_KZ_calibration_comparison_II
-        
-        else
-            
+    else
         F_calib_KZ_calibration_comparison_II_only_calib_lips
-        
-        end
-    
+    end
 end
 
 %% if calibration is not selected (default) run processing scripts with
 % default/inputted smoothing parameters
+%NOTE: The example calibrates the data and DOES NOT run the knickzone
+%detection. Set Calibration_option = 0 to run the knickzone detection
 if Calibration_option == 0
     % (5) Select Knickzones in each drainage basin
     % Select knickzones from Chi/elev data of each stream and tributary

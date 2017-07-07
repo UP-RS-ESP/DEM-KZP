@@ -34,13 +34,19 @@ mkdir calib_figure_outputs;
 mkdir calib_database_outputs;
 
 num = 1; %counter
+number_of_iterations = length(min_kp_size2_calib)*length(min_kp_size1_calib)*length(lumping_search_distance_calib)*length(SG_smoothing_calib);
+fprintf('At iteration # of %d: ', number_of_iterations);
 
 for b = 1:length(min_kp_size2_calib) % minimum knickpoint size2
     for a = 1:length(min_kp_size1_calib) % minimum knickpoint size1
         for c = 1:length(lumping_search_distance_calib)  % lumping window
             for l = 1:length(SG_smoothing_calib)   % smoothing window
+                fprintf('%d, ', num);
+                if mod(num,25) == 0
+                    fprintf('\nAt iteration # of %d: ', number_of_iterations);
+                end
             
-            iteration_number = num % tells you progress (this takes a while)
+            iteration_number = num; % tells you progress (this takes a while)
             
             %% Name Parameters
             
@@ -362,9 +368,6 @@ for b = 1:length(min_kp_size2_calib) % minimum knickpoint size2
                 beta_all_tribs_all_basins{1} = beta_all_tribs;  % for each basin
             end
 
-
-            fprintf('\n');
-
             % All the knickpoints are saved in the above cell arrays
             % Organize all knickpoints into a lists (unpack the cell arrays and
             % organize these attributes into columns in a matrix so they 
@@ -506,7 +509,7 @@ for b = 1:length(min_kp_size2_calib) % minimum knickpoint size2
                 kp_plot_size KZ_calib_northing_column_num KZ_calib_easting_column_num...
                 KZ_calib_relief_column_num do_you_have_calibration_KZ_bases smoothing_option...
                 theta_bf_option theta_ref num theta_bf ks_chiplot ksn_SA_store Min_DA_threshold...
-                Knickpoint_Database_Lips_all_params Knickpoint_Database_Bases_all_params...
+                Knickpoint_Database_Lips_all_params Knickpoint_Database_Bases_all_params orgfolder number_of_iterations oldfolder...
             
             end
         end

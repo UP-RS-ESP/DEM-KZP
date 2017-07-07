@@ -89,7 +89,7 @@
 format long g
 
 % set current directory as 'oldfolder'
-oldfolder = pwd;
+oldfolder = orgfolder;
 
 % load attribute table for the calibration knickzone bases and lips. ROW 1
 % is assumed to be the header! so starts reading at ROW 2!!!!!!
