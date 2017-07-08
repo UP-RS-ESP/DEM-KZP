@@ -13,7 +13,7 @@ end
 
 dem_plot_fname = sprintf('%s%s%s_DEM_Slope.pdf', map_dirname, dir_sep, DEM_basename_nodir);
 if exist(dem_plot_fname, 'file') ~= 2
-    figure
+    figure; set(gcf,'Visible', 'off');
     fprintf(1,'\tgenerating slope figures\n');
     set(gcf,'units','normalized','position',[0 0 1 1]);
     set(gcf, 'PaperOrientation', 'landscape');
@@ -34,13 +34,17 @@ if exist(dem_plot_fname, 'file') ~= 2
     xlabel('UTM-Easting (m)', 'Fontsize', 12);
     title_string = sprintf('%s: Slope ', DEM_basename_no_underscore);
     title(title_string, 'Fontsize', 14), grid;
-    export_fig(dem_plot_fname,quality_flag,'-pdf');
+    if exist('export_fig') == 2
+        export_fig(dem_plot_fname,quality_flag,'-pdf');
+    else
+        saveas(gcf,dem_plot_fname, 'pdf');
+    end
 end
 close all
 
 dem_plot_fname = sprintf('%s%s%s_Curv_Relief.pdf', map_dirname, dir_sep, DEM_basename_nodir);
 if exist(dem_plot_fname, 'file') ~= 2
-    figure
+    figure;set(gcf,'Visible', 'off');
     fprintf(1,'\tgenerating curvature figures\n');
     set(gcf,'units','normalized','position',[0 0 1 1]);
     set(gcf, 'PaperOrientation', 'landscape');
@@ -108,13 +112,17 @@ if exist(dem_plot_fname, 'file') ~= 2
     title_string = sprintf('%s: %d-m radius local relief ', ...
         DEM_basename_no_underscore, relief_values_m(2));
     title(title_string, 'Fontsize', 14), grid;
-    export_fig(dem_plot_fname,quality_flag,'-pdf');
+    if exist('export_fig') == 2
+        export_fig(dem_plot_fname,quality_flag,'-pdf');
+    else
+        saveas(gcf, dem_plot_fname, 'pdf');
+    end
 end
 close all
 
 dem_plot_fname = sprintf('%s%s%s_Curvature_comp.pdf', map_dirname, dir_sep, DEM_basename_nodir);
 if exist(dem_plot_fname, 'file') ~= 2
-    figure
+    figure;set(gcf,'Visible', 'off');
     fprintf(1,'\tgenerating curvature-comparison figure\n');
     set(gcf,'units','normalized','position',[0 0 1 1]);
     set(gcf, 'PaperOrientation', 'landscape');
@@ -183,13 +191,17 @@ if exist(dem_plot_fname, 'file') ~= 2
     title_string = sprintf('%s: %d-m radius local relief ', ...
         DEM_basename_no_underscore, relief_values_m(2));
     title(title_string, 'Fontsize', 14), grid;
-    export_fig(dem_plot_fname,quality_flag,'-pdf');
+    if exist('export_fig') == 2
+        export_fig(dem_plot_fname,quality_flag,'-pdf');
+    else
+        saveas(gcf, dem_plot_fname,'pdf');
+    end
 end
 close all
 
 dem_plot_fname = sprintf('%s%s%s_DEM_ksn.pdf', map_dirname, dir_sep, DEM_basename_nodir);
 if exist(dem_plot_fname, 'file') ~= 2
-    figure
+    figure;set(gcf,'Visible', 'off');
     fprintf(1,'\tgenerating k_sn figures\n');
     symbolspec_ksn045 = makesymbolspec('line',...
         {'ksn045' [prctile([AOI_STR_MS.ksn045], 5) ...
@@ -228,7 +240,11 @@ if exist(dem_plot_fname, 'file') ~= 2
     colorbar
     caxis([prctile([AOI_STR_MS.ks_adj], 5) prctile([AOI_STR_MS.ks_adj], 95)])
     hold off
-    export_fig(dem_plot_fname,quality_flag,'-pdf');
+    if exist('export_fig') == 2
+        export_fig(dem_plot_fname,quality_flag,'-pdf');
+    else
+        saveas(gcf, dem_plot_fname,'pdf');
+    end        
 end
 close all
 
@@ -236,7 +252,7 @@ close all
 if RIDGECREST == 1
     dem_plot_fname = sprintf('%s%s%s_ridgecrest_DEM_curv.pdf', plots_dirname, dir_sep, DEM_basename_nodir);
     if exist(dem_plot_fname, 'file') ~= 2
-        figure
+        figure;set(gcf,'Visible', 'off');
         fprintf(1,'\tgenerating ridgecrest plots\n');
         set(gcf,'units','normalized','position',[0 0 1 1]);
         set(gcf, 'PaperOrientation', 'landscape');
@@ -305,13 +321,17 @@ if RIDGECREST == 1
         title_string = sprintf('%s: \Delta Ridgecrest profiles, parabola minus normalized elevation', ...
         DEM_basename_no_underscore);
         title(title_string, 'Fontsize', 14);
-        export_fig(dem_plot_fname,quality_flag,'-pdf');
+        if exist('export_fig') == 2
+            export_fig(dem_plot_fname,quality_flag,'-pdf');
+        else
+            saveas(gcf, dem_plot_fname,'pdf');
+        end
     end
     close all
 
     dem_plot_fname = sprintf('%s%s%s_DEM_ridgecrest.pdf', plots_dirname, dir_sep, DEM_basename_nodir);
     if exist(dem_plot_fname, 'file') ~= 2
-        figure
+        figure;set(gcf,'Visible', 'off');
         fprintf(1,'\tgenerating ridgecrest maps\n');
         clf
         set(gcf,'units','normalized','position',[0 0 1 1]);
@@ -355,7 +375,11 @@ if RIDGECREST == 1
         h2 = colorbar; h2.Label.String = '\Delta norm. elevation'; h2.Label.FontSize = 12;
         %caxis([prctile([AOI_STR_MS.ks_adj], 5) prctile([AOI_STR_MS.ks_adj], 95)])
         hold off
-        export_fig(dem_plot_fname,quality_flag,'-pdf');
+        if exist('export_fig') == 2
+            export_fig(dem_plot_fname,quality_flag,'-pdf');
+        else
+            saveas(gcf, dem_plot_fname,'pdf');
+        end
     end
 end
 

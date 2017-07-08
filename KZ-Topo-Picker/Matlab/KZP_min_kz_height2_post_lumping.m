@@ -13,7 +13,7 @@ function [sig_kps_cells_lumped_filtered, sig_kps_bases_lumped_filtered,...
 kp_magnitude_matrix_lumped_equispaced = smooth_detrended_elev_current(sig_kps_cells_lumped) - smooth_detrended_elev_current(sig_kps_bases_lumped);
 
 if kp_magnitude_filter_option == 1
- for k = 1:length(sig_kps_cells_lumped); 
+ for k = 1:length(sig_kps_cells_lumped) 
      % for how many potential knickpoints we still have
 
     if kp_magnitude_matrix_lumped_equispaced(k) < min_kp_size2_magnitude

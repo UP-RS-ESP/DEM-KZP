@@ -134,14 +134,14 @@
 %
 KZP_knickzones_1load
 
-%% (2) Iterate through all basin tributaries and extract knickpoints
+%% (2) Iterate through all basins tributaries and extract knickpoints
 %
 KZP_knickzones_2tributaries
 
 %% (3) Iterate through all trunk streams and pull out knickpoints
 %
-KZP_knickzones_3trunks
+%KZP_knickzones_3trunks
 
 %% (4) Generate figures for each basin
 %
-KZP_knickzones_4mkfigs
+%KZP_knickzones_4mkfigs

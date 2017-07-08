@@ -387,7 +387,7 @@ if ~isnan(AOI_dbasins_unique_nr)
         if length(AOI_STR_dbasins_unique_subset{i}.x) > 20
             
             if KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
-                figure
+                figure; set(gcf,'Visible', 'off');
                 slope_area_plot_fname = sprintf('%s%s%s_basin_%d_sa.pdf', ...
                     KZP_parameters.plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
                 if exist(slope_area_plot_fname, 'file') ~= 2
@@ -453,14 +453,18 @@ if ~isnan(AOI_dbasins_unique_nr)
                         text(0.65, 0.2, s, 'Fontsize', 16, 'Units', 'normalized');
                         grid on
                         hold off
-                        export_fig(slope_area_plot_fname,KZP_parameters.quality_flag,'-pdf');
+                        if exist('export_fig') == 2
+                            export_fig(slope_area_plot_fname,KZP_parameters.quality_flag,'-pdf');
+                        else
+                            saveas(gcf,slope_area_plot_fname, 'pdf');
+                        end
                     end
                 end
                 
                 slope_area_map_fname = sprintf('%s%s%s_basin_%d_ksn.pdf', ...
                     KZP_parameters.plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
                 if exist(slope_area_map_fname, 'file') ~= 2
-                    figure
+                    figure; set(gcf,'Visible', 'off');
                     symbolspec_ksn045 = makesymbolspec('line',...
                         {'ksn045' [prctile([AOI_STR_MS.ksn045], 5) ...
                         prctile([AOI_STR_MS.ksn045], 95)] 'color' jet(6)});
@@ -514,7 +518,11 @@ if ~isnan(AOI_dbasins_unique_nr)
                         min(AOI_STR_dbasins_unique_subset{i}.y)-(yrange/15) ...
                         max(AOI_STR_dbasins_unique_subset{i}.y)+(yrange/15)])
                     hold off
-                    export_fig(slope_area_map_fname,KZP_parameters.quality_flag,'-pdf');
+                    if exist('export_fig') == 2
+                        export_fig(slope_area_map_fname,KZP_parameters.quality_flag,'-pdf');
+                    else
+                        saveas(gcf,slope_area_map_fname, 'pdf');
+                    end
                 end
             end
         end

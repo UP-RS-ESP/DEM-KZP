@@ -49,7 +49,7 @@ kp_face_slope_d = atand(kp_height./kp_length_dist) ; % divide drop in elevation 
 % knickpoints with face slopes that are too gradual
 
 for k = 1:length(kp_length_dist) % for the number of potential knickpoitns we still have
-    if kp_face_slope_d(k) < min_kp_slope;% Parmeter line 105
+    if kp_face_slope_d(k) < min_kp_slope% Parmeter line 105
 
         sig_kps_cells_lumped_filtered(k) = NaN; % mark cells that belong to too gradual knickpoint
         sig_kps_bases_lumped_filtered(k)=NaN;  % mark cells that belong to too gradual knickpoints

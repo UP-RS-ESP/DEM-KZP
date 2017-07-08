@@ -3,9 +3,9 @@ function [sig_kps_cells, sig_kps_bases] = ...
     kps_cells_current_trib,base_cells_current_trib,min_kp_size1)
 
 n2 = kps_lips_length;  % for all the potential knickpoints found
-for k =1:1:n2;
+for k =1:1:n2
     if smooth_detrended_elev_current(kps_cells_current_trib (k))-...
-            smooth_detrended_elev_current (base_cells_current_trib(k)) < min_kp_size1 ;
+            smooth_detrended_elev_current (base_cells_current_trib(k)) < min_kp_size1
         % see uf the elevation difference between the upstream knickpoint 
         %lip and downstream base exceeds a minimum knickpoint size
 
