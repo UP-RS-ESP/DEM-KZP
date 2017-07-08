@@ -9,8 +9,7 @@ Code developed by Al Neely (abn5031@psu.edu) and Bodo Bookhagen (bodo.bookhagen@
 
 Latest update: 8-July-2017 (BB)
 
-
-There are two subdirectories containing different Matlab codes with different purposes:
+**There are two subdirectories containing different Matlab codes with different purposes:**
 
 ## KZ-Picker
 The directory [KZ-Picker](KZ-Picker) contains a straight-forward Matlab code to calibrate and select knickpoints as described in Neely et al., 2017 (http://onlinelibrary.wiley.com/doi/10.1002/2017JF004250/full). Only Matlab, Topotoolbox, and this code are required. Only Matlab, Topotoolbox and this code are required. This code is particularly useful for calibrating individual basins and identifying best-fit parameters. See [KZ-Picker/Readme.md](KZ-Picker/Readme.md) for additional information. A box diagram (PDF) shows how the code operates [KZ-Picker_workflow.pdf](KZ-Picker/KZP-Picker_workflow.pdf).
