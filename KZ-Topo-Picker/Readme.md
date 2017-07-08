@@ -2,7 +2,7 @@
 Digital Elevation Model (DEM) and KnickZone Picker (KZP) processing
 
 Code developed by Al Neely and Bodo Bookhagen 10/12/2015, significantly
-modified March-May 2016, and July 2017
+modified March-May 2016, and July 2017 by Bodo Bookhagen.
 
 The code has been tested with Matlab R2012b, R2014b and R2015b, R2016b, R2017a. 
 It requires the Statistical Toolbox, the Topotoolbox, and 
@@ -25,7 +25,7 @@ The TopoToolbox requires the Image Processing Toolbox and the Statistics
 Toolbox (which are mostly installed in academic environment). 
 The Mapping Toolbox will come in handy, but is not required. The Curve 
 Fitting Toolbox will be used if available and will produce slightly
-different fitting parameters, e.g. (for 95% confidence Intervals).
+different fitting parameters (e.g., for 95% confidence Intervals).
 Make sure to add the Topotoolbox to the Matlab PATH.
 
 2. _export_fig_ from Mathworks MATLAB Central:
