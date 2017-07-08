@@ -6,6 +6,7 @@ Neely, A., Bookhagen B., Burbank, D.W. (2017): An automated knickzone selection 
 http://onlinelibrary.wiley.com/doi/10.1002/2017JF004250/full
 
 Code developed by Al Neely (abn5031@psu.edu) and Bodo Bookhagen (bodo.bookhagen@uni-potsdam.de)
+
 Latest update: 8-July-2017 (BB)
 
 
