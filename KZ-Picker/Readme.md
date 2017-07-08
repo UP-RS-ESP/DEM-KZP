@@ -15,7 +15,8 @@ The code was tested on a Ubuntu 16.04 LTS and Windows 7 operating system with Ma
 ## Installation
 Before running the code, you will need to install the additional items:
 
-1. _TopoToolbox_ (https://topotoolbox.wordpress.com/download/). We suggest using the github repository (https://github.com/wschwanghart/topotoolbox), for example: `git clone https://github.com/wschwanghart/topotoolbox` 
+1. _TopoToolbox_ (https://topotoolbox.wordpress.com/download/). We suggest using the github repository (https://github.com/wschwanghart/topotoolbox), for example: 
+`git clone https://github.com/wschwanghart/topotoolbox` 
 
 For additional information, see: https://topotoolbox.wordpress.com/. The TopoToolbox requires the Image Processing Toolbox and the Statistics Toolbox (which are mostly installed in academic environment). The Mapping Toolbox will come in handy, but is not required. The Curve Fitting Toolbox will be used if available and will produce slightly different fitting parameters, e.g. (for 95% confidence Intervals). Make sure to add the Topotoolbox to the Matlab PATH.
 
