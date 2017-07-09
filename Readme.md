@@ -34,8 +34,7 @@ We provide several example DEMs. For an example on demonstrating the calibration
 
 An example data including calibration files is available for the the Smugglers catchment for Santa Cruz Island:
 
-1. _smugglers_1m_dem.7z_ at [Examples/SCI-1m-Smugglers](Examples/SCI-1m-Smugglers). An example dataset at containing a 1-m DEM of the northern part of Santa Cruz Island, southern California. The example GeoTIF with calibration files are available at https://www.dropbox.com/s/kpujj3mfezzd34b/smugglers_1m.7z?dl=0 or https://boxup.uni-potsdam.de/index.php/f/38152339
-
+1. _smugglers_1m_dem.7z_ at [Examples/SCI-1m-Smugglers](Examples/SCI-1m-Smugglers). An example dataset at containing a 1-m DEM of the northern part of Santa Cruz Island, southern California. The example GeoTIF with calibration files are available at: https://www.dropbox.com/s/bkws9fsmv3hz7w1/KZ_picker_smugglers_EX.7z?dl=0 or https://boxup.uni-potsdam.de/index.php/f/38210279
 
 Additional datasets and example - without detailed description, but with paramter files - are available here:
 
