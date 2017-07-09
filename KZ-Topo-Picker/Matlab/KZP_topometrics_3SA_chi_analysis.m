@@ -150,7 +150,7 @@ if ~isnan(AOI_dbasins_unique_nr)
             % calculate ks with adjusted theta for this region
             AOI_ks_adj_crop = AOI_DEM_gradient8 ./ ...
                 (AOI_FAC.*(AOI_FAC.cellsize^2)).^...
-                AOI_STR_S_slopearea_dbasins_trunk{i}.theta;
+                AOI_STR_S_slopearea_dbasins_trunk_adj{i}.theta;
             AOI_ks_adj_crop.name = 'ks_adjusted';
             AOI_ks_adj_crop.zunit = 'm^0.9';
             
@@ -315,8 +315,8 @@ if ~isnan(AOI_dbasins_unique_nr)
                     yData_std(j) = nanstd(yData(idx));
                     clear idx
                 end
-                if sum(isnan(xData_median)) < 20
-                    % Not more than 20 values missing
+                if sum(~isnan(xData_median)) > 5
+                    % More than 5 values
                     if license('test', 'curve_fitting_toolbox') == 1
                         [xData_logspace, yData_logspace, wData_logspace] = prepareCurveData(xData_median, yData_median, yData_std);
                     else
@@ -356,9 +356,6 @@ if ~isnan(AOI_dbasins_unique_nr)
                     gof_logspace{i}.adjrsquare = NaN; gof_logspace{i}.rmse = NaN; ci_logspace(1:4) = NaN;
                     p_logspace_a = NaN; p_logspace_b = NaN;
                 end
-                
-                
-                
                 %pixelvalue, Centroid_X, Centroid_Y, BasinO_X, BasinO_Y, ks_slopearea, theta_slopearea, ks_trunk_slopearea, theta_trunk_slopearea, theta (concavity), y interception (ksn), r2, rmse, confint: a-, confint: a+, confint:b-, confint: b+, pval_a, pval_b, theta_robust_off, r2_robust_off, rmse_robust_off
                 utm_x_centroid = AOI_x(round(AOI_dbasins_unique_stats(i).Centroid(2)), round(AOI_dbasins_unique_stats(i).Centroid(1)));
                 utm_y_centroid = AOI_y(round(AOI_dbasins_unique_stats(i).Centroid(2)), round(AOI_dbasins_unique_stats(i).Centroid(1)));
@@ -424,6 +421,8 @@ if ~isnan(AOI_dbasins_unique_nr)
                         title(title_string, 'Fontsize', 16), grid;
                         grid on
                         %adding text: ksn, ks, theta, theta_ref, r2 and regression boundaries from SA plots
+                        %You may consider adding different statistics here
+                        %from other fitting/binning methods
                         s = sprintf('From slope-area analyses (binned) (DA=%3.2f km^2): k_{sn} trunk = %3.1f with theta = %0.2f, k_{s} trunk = %3.1f with theta = %0.2f\nk_{s} trunk = %3.1f with theta from chi plot = %0.2f, k_{s} trunk = %3.1f +/- %3.1f with theta from robust regression = %0.2f +/- %0.2f\nr^2 = %0.2f, rmse=%2.2e, p(k_{s}) = %1.2e, p(theta) = %1.2e', ...
                             max(AOI_STR_S_slopearea_dbasins{i}.a)/1e6, AOI_STR_S_slopearea_dbasins_trunk{i}.ks, AOI_STR_S_slopearea_dbasins_trunk{i}.theta, ...
                             AOI_STR_S_slopearea_dbasins_trunk_adj{i}.ks, AOI_STR_S_slopearea_dbasins_trunk_adj{i}.theta, ...
@@ -505,8 +504,8 @@ if ~isnan(AOI_dbasins_unique_nr)
                     mapshow(AOI_STR_MS_crop{i},'SymbolSpec',symbolspec_ks_adj);
                     ylabel('UTM-Northing (m)', 'Fontsize', 12);
                     xlabel('UTM-Easting (m)', 'Fontsize', 12);
-                    title_string = sprintf('%s: K_{s} adjusted with theta = %0.3f ', ...
-                        KZP_parameters.DEM_basename_no_underscore, AOI_STR_S_slopearea_dbasins{i}.theta);
+                    title_string = sprintf('%s: K_{s} adjusted with theta = %0.3f from SA-trunk', ...
+                        KZP_parameters.DEM_basename_no_underscore, AOI_STR_S_slopearea_dbasins_trunk_adj{i}.theta);
                     title(title_string, 'Fontsize', 14), grid;
                     colorbar
                     caxis([prctile([AOI_STR_MS_crop{i}.ks_adj], 5) ...

@@ -4,7 +4,7 @@
 
 %% Preprocessing
 KZP_parameters = struct;
-KZP_parameters.DEM_basename = 'Pozo_DTM_noveg_UTM11_NAD83'; 
+KZP_parameters.DEM_basename = 'Pozo_DTM_noveg_UTM11_NAD83_1m'; 
 % we assume that there exists a TIF file <DEM_basename>.tif
 % no need to add .tif here
 % Make sure that the TIF file is in UTM or other equal-area projected
@@ -23,16 +23,16 @@ KZP_parameters.area_threshold = 1e4;
 % *NOTE*: If you change this parameter after an initial processing, you
 % will have to remove the *_HYD.mat and *_STR.mat files
 
-KZP_parameters.min_drainage_area_to_process = 1e5;
+KZP_parameters.min_drainage_area_to_process = 1e6;
 % Additional drainage area value in m^2 that identifies value for
 % statistical calculations. No statistics and topometrics with drainage
 % area smaller than this value will be calculated. This is useful if you
 % want to process large DEMs, but would like to obtain topometrics only for
 % a reduced dataset. Can be set to KZP_parameters.area_threshold or to any
 % value larger than KZP_parameters.area_threshold. For example, stream can
-% be calculated for KZP_parameters.area_threshold = 5e3 but you decide to
-% only calculate statistics for stream with more than 1e5 with
-% KZP_parameters.min_drainage_area_to_process = 1e5. This parameter will
+% be calculated for KZP_parameters.area_threshold = 1e3 but you decide to
+% only calculate statistics for stream with more than 1e6 with
+% KZP_parameters.min_drainage_area_to_process = 1e6. This parameter will
 % also affect the basins and basin sizes that will be used to calculate
 % knickpoints.
 
@@ -45,7 +45,7 @@ KZP_parameters.min_dbasins_stats_to_process = KZP_parameters.min_drainage_area_t
 % 1e7 (10km2) or 1e8 (100 
 % km2) or 1e9 (1000km2)
 
-KZP_parameters.stream_order = [2 3];
+KZP_parameters.stream_order = [2 3 4];
 % Stream order for which to create individual basin plots. All basins equal
 % this streamorder will be processed for topometric statistics. A stream
 % order of 3 for a 30-m DEM includes catchments between 7-300 km2 (mean 45), 
@@ -107,67 +107,66 @@ KZP_parameters.show_figs = 1; %Generate figures? (1 = Yes, 0 = No,
 
 KZP_parameters.PaperType_size = 'A4'; % Sets paper type and size for export_fit: 'A4' or 'letter'
 
-%% Parameters for KnickZone-Picker (KZP)
-
-% (0) General KZP parameters
-KZ_databases_csv_dir = 'KZP_database_csv';
-KZ_databases_shapefile_dir = 'KZP_database_shapefile';
-KZ_figs_png_dir = 'KZP_figs_png';
-KZ_figs_pdf_dir = 'KZP_figs_pdf';
+%% Parameters for KnickZone-Picker (KZ-Picker)
 
 % (1) General Smoothing and filtering options:
 KZP_parameters.smoothing_option = 1; % set = 1 to smooth long profile, 0 for no smoothing
-KZP_parameters.smoothing_window = 151;  %Size of smoothing window for Savitzky-Golay filter in cells. Use 101-151 (default: 151) for 1m DEM, for 10m DEM use 15, for 30m DEM use 11 (cells)
+KZP_parameters.smoothing_window = 151;  %Size of smoothing window for Savitzky-Golay filter in cells. 
+% Use 101-151 (default: 125) for 1m DEM, for 10m DEM use 15, for 30m DEM use 11 (cells)
+
 KZP_parameters.sgolayfilt_order = 11;  % polynomial order of Savitzky-Golay filter, must be smaller than smoothing_window
-KZP_parameters.min_trib_size = 100;     % number of cells or minimum tributary length considered
-% number of grid cells (Savitzky-Golay smoothing, consider spatial resolution.
-% Suggested values are 25 to 100 gridcells for 1m DEM and values of 10 to 20 for 30m DEMs
-KZP_parameters.create_long_prof_4_tributaries = 1; % =1 for yes do this
-KZP_parameters.kp_plot_size = 0.5; % (may change depending on size of largest knickzones)
+% Use 101-151 (default: 11) for 1m DEM, for 10m DEM use 5, for 30m DEM use 3 (cells)
 
+KZP_parameters.min_trib_size = 125;     % number of cells or minimum tributary length considered
+% should be > than the length of the smoothing window
+% Suggested values are >125 gridcells for 1m DEM and values of 10 to 20 for 10 & 30m DEMs
 
-% (2) Combine closely spaced knickzones option (1 must = 1, other must = 0)
-KZP_parameters.chi_lump_option = 1; % use units of chi (essentially steepness)
+KZP_parameters.create_long_prof_4_tributaries = 1;
+
+KZP_parameters.kp_plot_size = 0.5; % (may change depending on size of largest knickzones, reduce number to make points smaller)
+
+% Filtering options:
 KZP_parameters.lumping_distance_upstream = 75; % distance upstream (combines closely spaced knickpoints)
-%combines knickzones spaced closer than this streamwise distance (m). Value
-%should reflect spacing of waterfalls or steps in individual knickzones 
-KZP_parameters.lumping_search_distance = 50;  % chi distance (combines closely spaced knickpoints)
-KZP_parameters.distance_upstream_lump_option = 0; % use units of distance upstream (m) (more tangible)
+% combines knickzones spaced closer than this streamwise distance (m). 
 
-% (3) Filter small knickzones option
+% Filter small knickzones option (One of these options must = 1)
 KZP_parameters.kp_magnitude_filter_option = 1;
 % uses knickzone magnitude (m) as measurement to remove small knickzones
 %(measures steepness (Ksn) anomaly: the elevation drop across knickzone 
 % after normalizing for the average stream ksn)
-KZP_parameters.kp_relief_filter_option = 0; % use a minimum knickzone relief (m) (elevation drop across knickzone)
+
+KZP_parameters.kp_relief_filter_option = 0; 
+% use a minimum knickzone relief (m) (elevation drop across knickzone)
 
 % NOTE:  knickzone relief systematically increases upstream as background 
 % stream gradients increase upstream (why kp_magnitude is prefered for
 % filtering)
 
 KZP_parameters.min_kp_size1 = 1.1; % minimum knickpoint size (magnitude in m) before combining closely spaced knickpoints
-KZP_parameters.min_kp_size2 = 3; % minimum knickpoint size after combining closely spaced knickpoints
-KZP_parameters.min_kp_slope = 0.001;  % minimum steepness anomoly of knickpoint (ksn greater than expected ksn)
-KZP_parameters.min_kp_size2_magnitude = 5; % minimum knickpoint magnitude before combining closely spaced knickpoints
-KZP_parameters.min_kp_size2_relief = 10; % minimum knickpoint magnitude before combining closely spaced knickpoints
 
-% (4) Additional Parameters
-KZP_parameters.theta_bf_option = 1; % set = 1 if you want to fit theta to co-linearize 
+KZP_parameters.min_kp_slope = 3;  % Minimum slope of knickzone reach (in degrees)
+KZP_parameters.min_kp_size2_magnitude = 5; % minimum knickpoint magnitude before combining closely spaced knickpoints (if this option is checked above)
+KZP_parameters.min_kp_size2_relief = 10; % minimum knickpoint relief before combining closely spaced knickpoints (if this option is checked above)
+
+% Additional Parameters
+KZP_parameters.theta_bf_option = 1; 
+% set = 1 if you want to fit theta to co-linearize 
 % (tributaries for chi plots) Set = 0 if you want to use ref. concavity
+
 KZP_parameters.theta_ref = KZP_parameters.theta; % ref. concavity (usually -0.45)
 
 %% KZP: Calibration parameters
 KZP_parameters.Calibration_option = 0; 
 % set to 1 for calibration (default no calibration)
 
-KZP_parameters.do_you_have_calibration_KZ_bases = 0; 
+KZP_parameters.do_you_have_calibration_KZ_bases = 1; 
 % Set = 0 if you only have positions and heights of knickzone lips in your
 % calibration dataset. Set = 1 if you have lips and bases
 
 % If calibrating alogrithm parameters, specify the name in front of the
 % .csv calibration files that contain the knickzone positions and reliefs
-KZP_parameters.KZ_lips_calib_fname = 'Smug_lips_1m.csv'; % PAGE 5 (4c. in manual)
-KZP_parameters.KZ_bases_calib_fname = 'Smug_bases_1m.csv';
+KZP_parameters.KZ_lips_calib_fname = '<fname>.csv'; %
+KZP_parameters.KZ_bases_calib_fname = '<fname>.csv';
 % these are tables containing the position of the calibration knickzones
 % function csvread will read these files in starting at row 2 (assuming row
 % 1 is a header)
@@ -186,17 +185,15 @@ KZP_parameters.KZ_calib_relief_column_num = 13;
 % and following instruction manual. If you only have KZ lips, you don't
 % have to include relief measurements in your calibration file.
 
-KZP_parameters.calibration_snapping_tolerance = 50; % (m) % 30m for 30m DEMs
+KZP_parameters.calibration_snapping_tolerance = 30; % (m) 
 % spatial tolerance when referencing calibration knickzones to streamobj.
+% needed because arcgis created knickzone positions are slightly different
+% from matlab streamOBJ (value of 30m is large enough for coarse DEMs even)
 
-% usually there is some small misfit between the position of the
-% calibration knickzones exported using the profiler toolbar and the
-% position of the streamobj network.  calibration knickzones more than this
-% distance away from the streamobj network are discarded.  these 
-% calibration knickzones may have been selected on a tributary that was not
-% analyzed or the calibration knickzones were selected at a stream-wise
-% position with a lower contriubing drainage area than Min_DA_threshold 
-% for the streamOBJ (line 13 in parameters script).
+% calibration knickzones further than line 221 from the matlab stream
+% network will be disregarded (selected at lower minDA than what is
+% considered by selected parameters or calibration knickzone lies in
+% entirely different stream network)
 
 % error tolerance btwn calibration and algorithm KZ boundaries (m)
 KZP_parameters.error_radius = 50;
@@ -231,7 +228,6 @@ KZP_parameters.min_kp_size2_calib = [5 10 15 20];
 % in lines 36 and 41)
 % (after running the closely spaced knickpoint combining function) 
 % meters of elev drop not explained by stream gradient
-
 
 %% Parameters and settings for GDAL
 %Determinig what system we are running on
@@ -401,6 +397,10 @@ KZP_parameters.map_dirname = 'DEM_maps';
 KZP_parameters.plots_dirname = 'DEM_plots';
 KZP_parameters.shapefile_dirname = 'DEM_shapefiles';
 KZP_parameters.geotiff_dirname = 'DEM_geotiff';
+KZP_parameters.KZP_shapefile_dirname = 'KZP_shapefiles';
+KZP_parameters.KZP_csv_dirname = 'KZP_csv';
+KZP_parameters.KZP_plots_dirname = 'KZP_plots';
+
 
 %filtering options for diffusion filtering
 KZP_parameters.difkernelWidth = 5;

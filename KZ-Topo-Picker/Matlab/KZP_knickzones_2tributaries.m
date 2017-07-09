@@ -480,7 +480,6 @@ for i = 1:number_of_basins
                 
                 for k =1:length(kp_elevation_bases)
                     % for the number of knickzones found in the current tributary
-                    
                     kz_num_counter(k,1) = kz_num ;
                     % count the number of kncikzones in current tributary
                     kz_num = kz_num +1;
@@ -505,94 +504,117 @@ for i = 1:number_of_basins
             
             %% compile list of knickzone attributes (will be complete list of
             % all knickzones found)
-            kz_up_da_all_tribs_lips = vertcat(kz_up_da_all_tribs_lips,kp_up_da);
-            kz_distance_all_tribs_lips = vertcat(kz_distance_all_tribs_lips,kp_distance);
-            kz_easting_all_tribs_lips = vertcat(kz_easting_all_tribs_lips,kp_easting);
-            kz_northing_all_tribs_lips = vertcat(kz_northing_all_tribs_lips,kp_northing);
-            kz_chi_all_tribs_lips = vertcat(kz_chi_all_tribs_lips,kp_chi);
-            kz_elev_all_tribs_lips = vertcat(kz_elev_all_tribs_lips,kp_elev);
+            kz_id_nr{i} = kz_num_counter;
+            kz_basin_id_kps{i} = i;
+            kz_up_da_all_tribs_lips{i} = kp_up_da;
+            kz_distance_all_tribs{i} = kp_distance;
+            kz_easting_all_tribs_lips{i} = kp_easting;
+            kz_northing_all_tribs_lips{i} = kp_northing;
+            kz_chi_all_tribs_lips{i} = kp_chi;
+            kz_elev_all_tribs_lips{i} = kp_elev;
             
             % bases
-            kz_up_da_all_tribs_bases = vertcat(kz_up_da_all_tribs_bases,kp_up_da_bases);
-            kz_distance_all_tribs_bases = vertcat(kz_distance_all_tribs_bases,kp_distance_bases);
-            kz_easting_all_tribs_bases = vertcat(kz_easting_all_tribs_bases,kp_easting_bases);
-            kz_northing_all_tribs_bases = vertcat(kz_northing_all_tribs_bases,kp_northing_bases);
-            kz_chi_all_tribs_bases = vertcat(kz_chi_all_tribs_bases,kp_chi_bases);
-            kz_elev_all_tribs_bases = vertcat(kz_elev_all_tribs_bases,kp_elevation_bases);
+            kz_up_da_all_tribs_bases{i} = kp_up_da_bases;
+            kz_distance_all_tribs_bases{i} = kp_distance_bases ;
+            kz_easting_all_tribs_bases{i} = kp_easting_bases;
+            kz_northing_all_tribs_bases{i} = kp_northing_bases;
+            kz_chi_all_tribs_bases{i} = kp_chi_bases;
+            kz_elev_all_tribs_bases{i} = kp_elevation_bases;
             
             % geometry
-            kz_magnitude_all_tribs = vertcat(kz_magnitude_all_tribs,kp_magnitude_matrix_final);
-            kz_length_all_tribs = vertcat(kz_length_all_tribs,kp_dist_final);
-            kz_face_slope_all_tribs = vertcat(kz_face_slope_all_tribs,kp_face_slope_final);
-            kz_relief_all_tribs = vertcat(kz_relief_all_tribs,knickpoint_relief);
+            kz_magnitude_all_tribs{i} = kp_magnitude_matrix_final;
+            kz_length_all_tribs{i} = kp_dist_final;
+            kz_face_slope_all_tribs{i} = kp_face_slope_final;
+            kz_relief_all_tribs{i} = knickpoint_relief;
+            
+%             kz_up_da_all_tribs_lips = vertcat(kz_up_da_all_tribs_lips,kp_up_da);
+%             kz_distance_all_tribs_lips = vertcat(kz_distance_all_tribs_lips,kp_distance);
+%             kz_easting_all_tribs_lips = vertcat(kz_easting_all_tribs_lips,kp_easting);
+%             kz_northing_all_tribs_lips = vertcat(kz_northing_all_tribs_lips,kp_northing);
+%             kz_chi_all_tribs_lips = vertcat(kz_chi_all_tribs_lips,kp_chi);
+%             kz_elev_all_tribs_lips = vertcat(kz_elev_all_tribs_lips,kp_elev);
+%             
+%             % bases
+%             kz_up_da_all_tribs_bases = vertcat(kz_up_da_all_tribs_bases,kp_up_da_bases);
+%             kz_distance_all_tribs_bases = vertcat(kz_distance_all_tribs_bases,kp_distance_bases);
+%             kz_easting_all_tribs_bases = vertcat(kz_easting_all_tribs_bases,kp_easting_bases);
+%             kz_northing_all_tribs_bases = vertcat(kz_northing_all_tribs_bases,kp_northing_bases);
+%             kz_chi_all_tribs_bases = vertcat(kz_chi_all_tribs_bases,kp_chi_bases);
+%             kz_elev_all_tribs_bases = vertcat(kz_elev_all_tribs_bases,kp_elevation_bases);
+%             
+%             % geometry
+%             kz_magnitude_all_tribs = vertcat(kz_magnitude_all_tribs,kp_magnitude_matrix_final);
+%             kz_length_all_tribs = vertcat(kz_length_all_tribs,kp_dist_final);
+%             kz_face_slope_all_tribs = vertcat(kz_face_slope_all_tribs,kp_face_slope_final);
+%             kz_relief_all_tribs = vertcat(kz_relief_all_tribs,knickpoint_relief);
             
         end % end tributaries loop
         
         % save knickzone attributes for current basin only (use only the
         % knickzones added in the last iteration)!!!
-        current_kz_num = max(kz_num_stored);
-        if kz_num_counter_prior < current_kz_num
-            % if more knickzones have been added from the current basin
-            
-            % add those knickzones to a new cell in a cell array so we can
-            % create knickzone stats for each basin individually
-            
-            % lips
-            kz_up_da_c_basin_lips{i} = kz_up_da_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
-            kz_distance_c_basin_lips{i} = kz_distance_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
-            kz_easting_c_basin_lips{i} = kz_easting_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
-            kz_northing_c_basin_lips{i} = kz_northing_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
-            kz_elev_c_basin_lips{i} = kz_elev_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
-            kz_chi_c_basin_lips{i} = kz_chi_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
-            
-            % bases
-            kz_up_da_c_basin_bases{i} = kz_up_da_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
-            kz_distance_c_basin_bases{i} = kz_distance_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
-            kz_easting_c_basin_bases{i} = kz_easting_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
-            kz_northing_c_basin_bases{i} = kz_northing_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
-            kz_elev_c_basin_bases{i} = kz_elev_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
-            kz_chi_c_basin_bases{i} = kz_chi_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
-            
-            % geometry
-            kz_magnitude_c_basin{i} = kz_magnitude_all_tribs((kz_num_counter_prior+1):current_kz_num);
-            kz_length_c_basin{i} = kz_length_all_tribs((kz_num_counter_prior+1):current_kz_num);
-            kz_face_slope_c_basin{i} = kz_face_slope_all_tribs((kz_num_counter_prior+1):current_kz_num);
-            kz_relief_c_basin{i} = kz_relief_all_tribs((kz_num_counter_prior+1):current_kz_num);
-            
-            % tributary info and knickzone ids
-            kz_num_stored_basin{i} = kz_num_stored((kz_num_counter_prior+1):current_kz_num);
-            ks_current_trib_stored_basin{i} = ks_current_trib_stored((kz_num_counter_prior+1):current_kz_num);
-            trib_id_num_stored_basin{i} = trib_id_num_stored((kz_num_counter_prior+1):current_kz_num);
-            
-        else % add no new knickzones to the cell array for the current basin
-            % lips
-            kz_up_da_c_basin_lips{i} = [];
-            kz_distance_c_basin_lips{i} = [];
-            kz_easting_c_basin_lips{i} = [];
-            kz_northing_c_basin_lips{i} = [];
-            kz_elev_c_basin_lips{i} = [];
-            kz_chi_c_basin_lips{i} = [];
-            
-            % bases
-            kz_up_da_c_basin_bases{i} = [];
-            kz_distance_c_basin_bases{i} = [];
-            kz_easting_c_basin_bases{i} = [];
-            kz_northing_c_basin_bases{i} = [];
-            kz_elev_c_basin_bases{i} = [];
-            kz_chi_c_basin_bases{i} = [];
-            
-            % geometry
-            kz_magnitude_c_basin{i} = [];
-            kz_length_c_basin{i} = [];
-            kz_face_slope_c_basin{i} = [];
-            kz_relief_c_basin{i} = [];
-            
-            % tributary info and knickzone ids
-            kz_num_stored_basin{i} = [];
-            ks_current_trib_stored_basin{i} = [];
-            trib_id_num_stored_basin{i} = [];
-            
-        end
+%         current_kz_num = max(kz_num_stored);
+%         if kz_num_counter_prior < current_kz_num
+%             % if more knickzones have been added from the current basin
+%             
+%             % add those knickzones to a new cell in a cell array so we can
+%             % create knickzone stats for each basin individually
+%             
+%             % lips
+%             kz_up_da_c_basin_lips{i} = kz_up_da_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
+%             kz_distance_c_basin_lips{i} = kz_distance_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
+%             kz_easting_c_basin_lips{i} = kz_easting_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
+%             kz_northing_c_basin_lips{i} = kz_northing_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
+%             kz_elev_c_basin_lips{i} = kz_elev_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
+%             kz_chi_c_basin_lips{i} = kz_chi_all_tribs_lips((kz_num_counter_prior+1):current_kz_num);
+%             
+%             % bases
+%             kz_up_da_c_basin_bases{i} = kz_up_da_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
+%             kz_distance_c_basin_bases{i} = kz_distance_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
+%             kz_easting_c_basin_bases{i} = kz_easting_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
+%             kz_northing_c_basin_bases{i} = kz_northing_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
+%             kz_elev_c_basin_bases{i} = kz_elev_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
+%             kz_chi_c_basin_bases{i} = kz_chi_all_tribs_bases((kz_num_counter_prior+1):current_kz_num);
+%             
+%             % geometry
+%             kz_magnitude_c_basin{i} = kz_magnitude_all_tribs((kz_num_counter_prior+1):current_kz_num);
+%             kz_length_c_basin{i} = kz_length_all_tribs((kz_num_counter_prior+1):current_kz_num);
+%             kz_face_slope_c_basin{i} = kz_face_slope_all_tribs((kz_num_counter_prior+1):current_kz_num);
+%             kz_relief_c_basin{i} = kz_relief_all_tribs((kz_num_counter_prior+1):current_kz_num);
+%             
+%             % tributary info and knickzone ids
+%             kz_num_stored_basin{i} = kz_num_stored((kz_num_counter_prior+1):current_kz_num);
+%             ks_current_trib_stored_basin{i} = ks_current_trib_stored((kz_num_counter_prior+1):current_kz_num);
+%             trib_id_num_stored_basin{i} = trib_id_num_stored((kz_num_counter_prior+1):current_kz_num);
+%             
+%         else % add no new knickzones to the cell array for the current basin
+%             % lips
+%             kz_up_da_c_basin_lips{i} = [];
+%             kz_distance_c_basin_lips{i} = [];
+%             kz_easting_c_basin_lips{i} = [];
+%             kz_northing_c_basin_lips{i} = [];
+%             kz_elev_c_basin_lips{i} = [];
+%             kz_chi_c_basin_lips{i} = [];
+%             
+%             % bases
+%             kz_up_da_c_basin_bases{i} = [];
+%             kz_distance_c_basin_bases{i} = [];
+%             kz_easting_c_basin_bases{i} = [];
+%             kz_northing_c_basin_bases{i} = [];
+%             kz_elev_c_basin_bases{i} = [];
+%             kz_chi_c_basin_bases{i} = [];
+%             
+%             % geometry
+%             kz_magnitude_c_basin{i} = [];
+%             kz_length_c_basin{i} = [];
+%             kz_face_slope_c_basin{i} = [];
+%             kz_relief_c_basin{i} = [];
+%             
+%             % tributary info and knickzone ids
+%             kz_num_stored_basin{i} = [];
+%             ks_current_trib_stored_basin{i} = [];
+%             trib_id_num_stored_basin{i} = [];
+%             
+%         end
         
         % increase the 'prior' counter by the amount of knickzones found in the
         % past iteration
@@ -603,31 +625,31 @@ for i = 1:number_of_basins
 end
 
 %%
-[sgolay_window_c_basin, sgolayfilt_order_c_basin, lumping_window_c_basin,...
-    min_kp_size1_c_basin,min_kp_size2_c_basin,min_kp_slope_c_basin,Min_trib_size_c_basin,...
-    Min_DA_threshold_c_basin,theta_ref_c_basin,ks_chiplot_c_basin,ksn_SA_c_basin,...
-    theta_bf_c_basin,stream_id_c_basin,ks_chiplot_all,ksn_SA_all,theta_bf_all,...
-    stream_id_all,sgolay_window_all,sgolayfilt_order_all,lumping_window_all,...
-    min_kp_size1_all,min_kp_size2_all,min_kp_slope_all,Min_trib_size_all,...
-    Min_DA_threshold_all,theta_ref_all] = ...
-    KZP_parameter_prep_csv(KZP_parameters.smoothing_window,KZP_parameters.sgolayfilt_order,...
-    KZP_parameters.lumping_distance_upstream,KZP_parameters.min_kp_size1,KZP_parameters.min_kp_size2_magnitude,...
-    KZP_parameters.min_kp_size2_relief,KZP_parameters.kp_relief_filter_option,KZP_parameters.kp_magnitude_filter_option,...
-    KZP_parameters.min_kp_slope,KZP_parameters.min_trib_size,...
-    KZP_parameters.min_drainage_area_to_process,KZP_parameters.theta_ref,ks_chiplot,...
-    ksn_SA_store,theta_bf,kz_up_da_c_basin_lips,ks_chiplot_all,...
-    ksn_SA_all,theta_bf_all,stream_id_all,sgolay_window_all,sgolayfilt_order_all,...
-    lumping_window_all,min_kp_size1_all,min_kp_size2_all,min_kp_slope_all,...
-    Min_trib_size_all,Min_DA_threshold_all,theta_ref_all,stream_id_c_basin,...
-    ksn_SA_c_basin,ks_chiplot_c_basin,theta_bf_c_basin,sgolay_window_c_basin,...
-    sgolayfilt_order_c_basin,lumping_window_c_basin,min_kp_size1_c_basin,...
-    min_kp_size2_c_basin,min_kp_slope_c_basin,Min_trib_size_c_basin,...
-    Min_DA_threshold_c_basin);
-
+% [sgolay_window_c_basin, sgolayfilt_order_c_basin, lumping_window_c_basin,...
+%     min_kp_size1_c_basin,min_kp_size2_c_basin,min_kp_slope_c_basin,Min_trib_size_c_basin,...
+%     Min_DA_threshold_c_basin,theta_ref_c_basin,ks_chiplot_c_basin,ksn_SA_c_basin,...
+%     theta_bf_c_basin,stream_id_c_basin,ks_chiplot_all,ksn_SA_all,theta_bf_all,...
+%     stream_id_all,sgolay_window_all,sgolayfilt_order_all,lumping_window_all,...
+%     min_kp_size1_all,min_kp_size2_all,min_kp_slope_all,Min_trib_size_all,...
+%     Min_DA_threshold_all,theta_ref_all] = ...
+%     KZP_parameter_prep_csv(KZP_parameters.smoothing_window,KZP_parameters.sgolayfilt_order,...
+%     KZP_parameters.lumping_distance_upstream,KZP_parameters.min_kp_size1,KZP_parameters.min_kp_size2_magnitude,...
+%     KZP_parameters.min_kp_size2_relief,KZP_parameters.kp_relief_filter_option,KZP_parameters.kp_magnitude_filter_option,...
+%     KZP_parameters.min_kp_slope,KZP_parameters.min_trib_size,...
+%     KZP_parameters.min_drainage_area_to_process,KZP_parameters.theta_ref,ks_chiplot,...
+%     ksn_SA_store,theta_bf,kz_up_da_c_basin_lips,ks_chiplot_all,...
+%     ksn_SA_all,theta_bf_all,stream_id_all,sgolay_window_all,sgolayfilt_order_all,...
+%     lumping_window_all,min_kp_size1_all,min_kp_size2_all,min_kp_slope_all,...
+%     Min_trib_size_all,Min_DA_threshold_all,theta_ref_all,stream_id_c_basin,...
+%     ksn_SA_c_basin,ks_chiplot_c_basin,theta_bf_c_basin,sgolay_window_c_basin,...
+%     sgolayfilt_order_c_basin,lumping_window_c_basin,min_kp_size1_c_basin,...
+%     min_kp_size2_c_basin,min_kp_slope_c_basin,Min_trib_size_c_basin,...
+%     Min_DA_threshold_c_basin);
+% 
 % ^ a bit bulky, but there are a lot of parameters we want to save
 
 %% Plot all knickpoints and generate a map
 KZP_knickpoint_maps_plots
 
 %% Save all data to csv/shapefiles for use in a GIS
-%KZP_knickpoints_save_csv
+KZP_knickpoints_save_csv
