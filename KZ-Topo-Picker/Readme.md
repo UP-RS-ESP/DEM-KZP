@@ -3,7 +3,7 @@ Digital Elevation Model (DEM) and KnickZone Picker (KZP) processing
 
 Code developed by Al Neely (abn5031@psu.edu) and Bodo Bookhagen (bodo.bookhagen@uni-potsdam.de)
 
-Latest update: 9-July-2017 (BB)
+Latest update: 10-July-2017 (BB)
 
 The code has been tested with Matlab R2012b, R2014b and R2015b, R2016b, R2017a. 
 It requires the Statistical Toolbox, the Topotoolbox, and 
@@ -76,4 +76,4 @@ The codes will write to subdirectories of the directory where den DEM is stored.
 6. _KZP_shapefiles_ contains the shapfiles for knickpoint lips and bases with attributes storing elevation, chi, magnitude, slope, and relief of the knickpoint.
 
 ## Examples
-For driver and parameter examples, pleasee see: https://github.com/UP-RS-ESP/DEM-KZP/tree/master/Examples
+For additional parameter examples, see [Examples](Examples).

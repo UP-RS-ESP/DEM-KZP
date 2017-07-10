@@ -17,7 +17,7 @@ The directory [KZ-Picker](KZ-Picker) contains a straight-forward Matlab code to 
 
 See [KZ-Picker/Readme.md](KZ-Picker/Readme.md) for additional information.
 
-A box diagram (PDF) shows how the code operates [KZ-Picker_workflow.pdf](KZ-Picker/KZP-Picker_workflow.pdf).
+A box diagram (PDF) shows how the code operates [KZ-Picker/Examples/KZ-Picker_workflow.pdf](KZ-Picker/Examples/KZP-Picker_workflow.pdf).
 
 Examples for this code are available in [KZ-Picker/Examples](KZ-Picker/Examples).
 
