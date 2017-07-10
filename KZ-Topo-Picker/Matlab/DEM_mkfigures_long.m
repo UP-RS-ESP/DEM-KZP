@@ -329,7 +329,7 @@ if RIDGECREST == 1
     end
     close all
 
-    dem_plot_fname = sprintf('%s%s%s_DEM_ridgecrest.pdf', plots_dirname, dir_sep, DEM_basename_nodir);
+    dem_plot_fname = sprintf('%s%s%s_DEM_ridgecrest.pdf', map_dirname, dir_sep, DEM_basename_nodir);
     if exist(dem_plot_fname, 'file') ~= 2
         figure;set(gcf,'Visible', 'off');
         fprintf(1,'\tgenerating ridgecrest maps\n');

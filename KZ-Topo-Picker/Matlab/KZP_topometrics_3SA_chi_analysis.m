@@ -176,16 +176,19 @@ if ~isnan(AOI_dbasins_unique_nr)
             shapeout_all_fn = sprintf('%s%strunk%s%s_MS_trunk_ksn_db%d.*', KZP_parameters.shapefile_dirname, ...
                 KZP_parameters.dir_sep, KZP_parameters.dir_sep, KZP_parameters.DEM_basename, i);
             if exist(shapeout_fn, 'file') ~= 2
-                %fprintf(1,'\twriting shapefile and adding projection.\n');
-                shapewrite(AOI_STR_MS_crop{i},shapeout_fn);
-                %Because shapewrite doesn't add projection information, we have to add
-                %these manually via ogr2ogr or ArcMAP (or something similar)
-                shapeout_fn_prj = sprintf('%s%strunk%s%s_MS_trunk_ksn_db%d_proj.shp', KZP_parameters.shapefile_dirname, ...
-                    KZP_parameters.dir_sep, KZP_parameters.dir_sep, KZP_parameters.DEM_basename, i);
-                eval([KZP_parameters.gdalsrsinfo_cmd, ' -o wkt ', KZP_parameters.DEM_fname, '> projection.prj']);
-                eval([KZP_parameters.ogr2ogr_cmd, ' -s_srs projection.prj -t_srs projection.prj ', ...
-                    shapeout_fn_prj, ' ', shapeout_fn, ' 2> ', shapeout_fn_out]);
-                eval([KZP_parameters.remove_cmd, ' ', shapeout_all_fn]);
+                %only write if all values are finite
+                if sum(~isfinite([AOI_STR_MS_crop{i}.ks_adj])) == 0 && sum(~isfinite([AOI_STR_MS_crop{i}.ks045])) == 0
+                    %fprintf(1,'\twriting shapefile and adding projection.\n');
+                    shapewrite(AOI_STR_MS_crop{i},shapeout_fn);
+                    %Because shapewrite doesn't add projection information, we have to add
+                    %these manually via ogr2ogr or ArcMAP (or something similar)
+                    shapeout_fn_prj = sprintf('%s%strunk%s%s_MS_trunk_ksn_db%d_proj.shp', KZP_parameters.shapefile_dirname, ...
+                        KZP_parameters.dir_sep, KZP_parameters.dir_sep, KZP_parameters.DEM_basename, i);
+                    eval([KZP_parameters.gdalsrsinfo_cmd, ' -o wkt ', KZP_parameters.DEM_fname, '> projection.prj']);
+                    eval([KZP_parameters.ogr2ogr_cmd, ' -s_srs projection.prj -t_srs projection.prj ', ...
+                        shapeout_fn_prj, ' ', shapeout_fn, ' 2> ', shapeout_fn_out]);
+                    eval([KZP_parameters.remove_cmd, ' ', shapeout_all_fn]);
+                end
             end
         end
         
@@ -388,7 +391,7 @@ if ~isnan(AOI_dbasins_unique_nr)
             gof_logspace{i}.adjrsquare = NaN; gof_logspace{i}.rmse = NaN;
             utm_x_centroid = AOI_x(round(AOI_dbasins_unique_stats(i).Centroid(2)), round(AOI_dbasins_unique_stats(i).Centroid(1)));
             utm_y_centroid = AOI_y(round(AOI_dbasins_unique_stats(i).Centroid(2)), round(AOI_dbasins_unique_stats(i).Centroid(1)));
-            AOI_dbasins_stats_min_area(i,:) = [AOI_dbasins_unique(i), utm_x_centroid, utm_y_centroid, BasinO_X, BasinO_Y, NaN, ...
+            AOI_dbasins_stats_min_area(i,:) = [AOI_dbasins_unique(i), utm_x_centroid, utm_y_centroid, NaN, NaN, NaN, ...
                 NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN];
         end
         if length(AOI_STR_dbasins_unique_subset{i}.x) > 20
@@ -483,7 +486,7 @@ if ~isnan(AOI_dbasins_unique_nr)
                             {'ksn045' [0 1] 'color' jet(6)});
                     end
                     
-                    if prctile([AOI_STR_MS_crop{i}.ks_adj], 95) > 0
+                    if prctile([AOI_STR_MS_crop{i}.ks_adj], 95) > 0 && isfinite(prctile([AOI_STR_MS_crop{i}.ks_adj], 95))
                         symbolspec_ks_adj = makesymbolspec('line',...
                             {'ks_adj' [prctile([AOI_STR_MS_crop{i}.ks_adj], 5) ...
                             prctile([AOI_STR_MS_crop{i}.ks_adj], 95)] 'color' jet(6)});
@@ -522,15 +525,20 @@ if ~isnan(AOI_dbasins_unique_nr)
                         [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], ...
                         'colormap',gray,'colorbar',false)
                     hold on
-                    mapshow(AOI_STR_MS_crop{i},'SymbolSpec',symbolspec_ks_adj);
+                    if sum(~isfinite([AOI_STR_MS_crop{i}.ks_adj])) == 0 && sum(~isfinite([AOI_STR_MS_crop{i}.ks045])) == 0
+                        mapshow(AOI_STR_MS_crop{i},'SymbolSpec',symbolspec_ks_adj);
+                    end
                     ylabel('UTM-Northing (m)', 'Fontsize', 12);
                     xlabel('UTM-Easting (m)', 'Fontsize', 12);
                     title_string = sprintf('%s: K_{s} adjusted with theta = %0.3f from SA-trunk', ...
                         KZP_parameters.DEM_basename_no_underscore, AOI_STR_S_slopearea_dbasins_trunk_adj{i}.theta);
                     title(title_string, 'Fontsize', 14), grid;
                     colorbar
-                    caxis([prctile([AOI_STR_MS_crop{i}.ks_adj], 5) ...
-                        prctile([AOI_STR_MS_crop{i}.ks_adj], 95)])
+                    if sum(~isfinite([AOI_STR_MS_crop{i}.ks_adj])) == 0
+                        
+                        caxis([prctile([AOI_STR_MS_crop{i}.ks_adj], 5) ...
+                            prctile([AOI_STR_MS_crop{i}.ks_adj], 95)]);
+                    end
                     xrange = max(AOI_STR_dbasins_unique_subset{i}.x) - min(AOI_STR_dbasins_unique_subset{i}.x);
                     yrange = max(AOI_STR_dbasins_unique_subset{i}.y) - min(AOI_STR_dbasins_unique_subset{i}.y);
                     axis([min(AOI_STR_dbasins_unique_subset{i}.x)-(xrange/15) ...
@@ -581,13 +589,15 @@ if exist(KZP_parameters.DEM_STR_MAT_fname, 'file') == 2
             if exist(shapeout_fn_prj, 'file') ~= 2
                 fprintf('\tAt basin %d of %d, ', i, AOI_dbasins_unique_nr);
                 fprintf(1,'\twriting shapefile: %s\n', shapeout_fn);
-                shapewrite(AOI_STR_MS_crop{i},shapeout_fn);
-                %Because shapewrite doesn't add projection information, we have to add
-                %these manually via ogr2ogr or ArcMAP (or something similar)
-                eval([KZP_parameters.gdalsrsinfo_cmd, ' -o wkt ', DEM_fname, '> projection.prj']);
-                eval([KZP_parameters.ogr2ogr_cmd, ' -s_srs projection.prj -t_srs projection.prj ', ...
-                    shapeout_fn_prj, ' ', shapeout_fn, ' 2>', shapeout_fn_out]);
-                eval([KZP_parameters.remove_cmd, ' ', shapeout_all_fn]);
+                if sum(~isfinite([AOI_STR_MS_crop{i}.ks_adj])) == 0 && sum(~isfinite([AOI_STR_MS_crop{i}.ks045])) == 0
+                    shapewrite(AOI_STR_MS_crop{i},shapeout_fn);
+                    %Because shapewrite doesn't add projection information, we have to add
+                    %these manually via ogr2ogr or ArcMAP (or something similar)
+                    eval([KZP_parameters.gdalsrsinfo_cmd, ' -o wkt ', DEM_fname, '> projection.prj']);
+                    eval([KZP_parameters.ogr2ogr_cmd, ' -s_srs projection.prj -t_srs projection.prj ', ...
+                        shapeout_fn_prj, ' ', shapeout_fn, ' 2>', shapeout_fn_out]);
+                    eval([KZP_parameters.remove_cmd, ' ', shapeout_all_fn]);
+                end
             end
         end
     end
