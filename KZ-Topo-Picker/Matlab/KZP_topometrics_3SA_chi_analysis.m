@@ -231,7 +231,12 @@ if ~isnan(AOI_dbasins_unique_nr)
                 %enough data points
                 xData = area; yData = grad;
                 if license('test', 'curve_fitting_toolbox') == 1
-                    [xData, yData] = prepareCurveData(xData, yData);
+                    if exist('prepareCurveData') == 2
+                        [xData, yData] = prepareCurveData(xData, yData);
+                    else
+                        idx = find(~isfinite(xData)); xData(idx) = []; yData(idx) = [];
+                        xData = xData'; yData = yData';
+                    end
                 else
                     idx = find(~isfinite(xData)); xData(idx) = []; yData(idx) = [];
                     xData = xData'; yData = yData';
@@ -318,7 +323,12 @@ if ~isnan(AOI_dbasins_unique_nr)
                 if sum(~isnan(xData_median)) > 5
                     % More than 5 values
                     if license('test', 'curve_fitting_toolbox') == 1
-                        [xData_logspace, yData_logspace, wData_logspace] = prepareCurveData(xData_median, yData_median, yData_std);
+                        if exist('prepareCurveData') == 2
+                            [xData_logspace, yData_logspace, wData_logspace] = prepareCurveData(xData_median, yData_median, yData_std);
+                        else
+                            idx = find(~isfinite(xData_median)); xData_median(idx) = []; yData_median(idx) = []; yData_std(idx) = [];
+                            xData_logspace = xData_median'; yData_logspace = yData_median'; wData_logspace = yData_std';
+                        end
                     else
                         idx = find(~isfinite(xData_median)); xData_median(idx) = []; yData_median(idx) = []; yData_std(idx) = [];
                         xData_logspace = xData_median'; yData_logspace = yData_median'; wData_logspace = yData_std';
@@ -464,12 +474,23 @@ if ~isnan(AOI_dbasins_unique_nr)
                     KZP_parameters.plots_dirname, KZP_parameters.dir_sep, KZP_parameters.DEM_basename_nodir, i);
                 if exist(slope_area_map_fname, 'file') ~= 2
                     figure; set(gcf,'Visible', 'off');
-                    symbolspec_ksn045 = makesymbolspec('line',...
-                        {'ksn045' [prctile([AOI_STR_MS.ksn045], 5) ...
-                        prctile([AOI_STR_MS.ksn045], 95)] 'color' jet(6)});
-                    symbolspec_ks_adj = makesymbolspec('line',...
-                        {'ks_adj' [prctile([AOI_STR_MS_crop{i}.ks_adj], 5) ...
-                        prctile([AOI_STR_MS_crop{i}.ks_adj], 95)] 'color' jet(6)});
+                    if prctile([AOI_STR_MS.ksn045], 95) > 0
+                        symbolspec_ksn045 = makesymbolspec('line',...
+                            {'ksn045' [prctile([AOI_STR_MS.ksn045], 5) ...
+                            prctile([AOI_STR_MS.ksn045], 95)] 'color' jet(6)});
+                    else
+                        symbolspec_ksn045 = makesymbolspec('line',...
+                            {'ksn045' [0 1] 'color' jet(6)});
+                    end
+                    
+                    if prctile([AOI_STR_MS_crop{i}.ks_adj], 95) > 0
+                        symbolspec_ks_adj = makesymbolspec('line',...
+                            {'ks_adj' [prctile([AOI_STR_MS_crop{i}.ks_adj], 5) ...
+                            prctile([AOI_STR_MS_crop{i}.ks_adj], 95)] 'color' jet(6)});
+                    else
+                        symbolspec_ks_adj = makesymbolspec('line',...
+                            {'ks_adj' [0 1] 'color' jet(6)});
+                    end                        
                     clf
                     set(gcf,'units','normalized','position',[0 0 1 1]);
                     set(gcf, 'PaperOrientation', 'landscape');

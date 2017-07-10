@@ -146,7 +146,12 @@ for k = 1:length(KZP_parameters.stream_order)
                     %enough data points
                     xData = area; yData = grad;
                     if license('test', 'curve_fitting_toolbox') == 1
-                        [xData, yData] = prepareCurveData(xData, yData);
+                        if exist('prepareCurveData') == 2
+                            [xData, yData] = prepareCurveData(xData, yData);
+                        else
+                            idx = find(~isfinite(xData)); xData(idx) = []; yData(idx) = [];
+                            xData = xData'; yData = yData';
+                        end
                     else
                         idx = find(~isfinite(xData));
                         xData(idx) = []; yData(idx) = [];
@@ -232,7 +237,13 @@ for k = 1:length(KZP_parameters.stream_order)
                         clear idx
                     end
                     if license('test', 'curve_fitting_toolbox') == 1
-                        [xData_logspace, yData_logspace, wData_logspace] = prepareCurveData(xData_median, yData_median, yData_std);
+                        if exist('prepareCurveData') == 2
+                            [xData_logspace, yData_logspace, wData_logspace] = prepareCurveData(xData_median, yData_median, yData_std);
+                        else
+                            idx = find(~isfinite(xData_median)); xData_median(idx) = []; yData_median(idx) = []; yData_std(idx) = [];
+                            xData_logspace = xData_median'; yData_logspace = yData_median'; wData_logspace = yData_std';
+                        end
+                        
                     else
                         idx = find(~isfinite(xData_median)); xData_median(idx) = []; yData_median(idx) = []; yData_std(idx) = [];
                         xData_logspace = xData_median'; yData_logspace = yData_median'; wData_logspace = yData_std';
