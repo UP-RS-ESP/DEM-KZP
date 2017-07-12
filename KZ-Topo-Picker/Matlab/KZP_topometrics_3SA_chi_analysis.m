@@ -72,6 +72,7 @@ elseif KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
         end
     end
 end
+
 if ~isnan(AOI_dbasins_unique_nr)
     AOI_dbasins_stats_min_area = NaN(AOI_dbasins_unique_nr,35);
     % create empty mask to indicate basins
@@ -95,6 +96,9 @@ if ~isnan(AOI_dbasins_unique_nr)
         AOI_FAC_dbasins_w = (AOI_FAC.*(AOI_FAC.cellsize.^2) > ...
             KZP_parameters.min_drainage_area_to_process) & (AOI_dbasins_current > 0);  % masks flow accum grid (above threshold)
         AOI_STR_dbasins_unique_subset{i} = STREAMobj(AOI_FD, AOI_FAC_dbasins_w);
+        AOI_DEM_c = crop(AOI_DEM, AOI_dbasins_current, 0);
+        idx=find(AOI_DEM_c.Z == 0);
+        AOI_DEM_c.Z(idx) = NaN;
         
         % Mask basin in AOI_dbasins_stats
         idx_current_basin = find(AOI_dbasins_current.Z == idx_basin);
@@ -499,9 +503,16 @@ if ~isnan(AOI_dbasins_unique_nr)
                     set(gcf, 'PaperOrientation', 'landscape');
                     set(gcf, 'PaperType', KZP_parameters.PaperType_size);
                     subplot(2,1,1,'align')
+%Set colorscale to entire DEM
+%                     imageschs(AOI_DEM, AOI_DEM, 'caxis', ...
+%                         [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], ...
+%                         'colormap',gray,'colorbar',false);
+
+%Set colorscale to area of clip
                     imageschs(AOI_DEM, AOI_DEM, 'caxis', ...
-                        [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], ...
-                        'colormap',gray,'colorbar',false)
+                        [nanmin((AOI_DEM_c.Z(:))) ceil(nanmax(AOI_DEM_c.Z(:)))],...
+                        'colormap',gray,'colorbar',false);
+
                     hold on
                     mapshow(AOI_STR_MS,'SymbolSpec',symbolspec_ksn045);
                     ylabel('UTM-Northing (m)', 'Fontsize', 12);
@@ -521,9 +532,12 @@ if ~isnan(AOI_dbasins_unique_nr)
                     hold off
                     
                     subplot(2,1,2,'align')
+%                     imageschs(AOI_DEM, AOI_DEM, 'caxis', ...
+%                         [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], ...
+%                         'colormap',gray,'colorbar',false)
                     imageschs(AOI_DEM, AOI_DEM, 'caxis', ...
-                        [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], ...
-                        'colormap',gray,'colorbar',false)
+                        [floor(nanmin(AOI_DEM_c.Z(:))) ceil(nanmax(AOI_DEM_c.Z(:)))],...
+                        'colormap',gray,'colorbar',false);
                     hold on
                     if sum(~isfinite([AOI_STR_MS_crop{i}.ks_adj])) == 0 && sum(~isfinite([AOI_STR_MS_crop{i}.ks045])) == 0
                         mapshow(AOI_STR_MS_crop{i},'SymbolSpec',symbolspec_ks_adj);
@@ -555,7 +569,7 @@ if ~isnan(AOI_dbasins_unique_nr)
             end
         end
         
-        clear AOI_DEM_gradient8_crop AOI_FAC_crop AOI_ks_adj_crop
+        clear AOI_DEM_gradient8_crop AOI_FAC_crop AOI_ks_adj_crop AOI_DEM_c
         close all
         
         clear area grad xData yData xData_logspace yData_logspace wData_logspace

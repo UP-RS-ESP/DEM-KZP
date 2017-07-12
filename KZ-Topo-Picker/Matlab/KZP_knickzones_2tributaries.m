@@ -184,14 +184,15 @@ for i = 1:number_of_basins
                 
                 % save the tributary vectors within the '_trimmed' cell arrays inside
                 % of larger cell arrays for each basin {i}
-                elev_stored_trimmed_basin{bsn_counter} = elev_stored_trimmed ;
-                chi_stored_trimmed_basin{bsn_counter} = chi_stored_trimmed ;
-                eastingUTM11_stored_trimmed_basin{bsn_counter} = eastingUTM11_stored_trimmed ;
-                northingUTM11_stored_trimmed_basin{bsn_counter} = northingUTM11_stored_trimmed ;
-                upstream_DA_stored_trimmed_basin{bsn_counter} = upstream_DA_stored_trimmed ;
-                distance_stored_trimmed_basin{bsn_counter} = distance_stored_trimmed ;
+                elev_stored_trimmed_basin{i} = elev_stored_trimmed ;
+                chi_stored_trimmed_basin{i} = chi_stored_trimmed ;
+                eastingUTM11_stored_trimmed_basin{i} = eastingUTM11_stored_trimmed ;
+                northingUTM11_stored_trimmed_basin{i} = northingUTM11_stored_trimmed ;
+                upstream_DA_stored_trimmed_basin{i} = upstream_DA_stored_trimmed ;
+                distance_stored_trimmed_basin{i} = distance_stored_trimmed ;
                 % now each basin (i), has an array of tributaries (j) that we can
                 % pick knickzones in seperately.
+                AOI_dbasins_unique2(i) = AOI_dbasins_unique(i);
                 bsn_counter = bsn_counter + 1;
             end
         end
@@ -200,8 +201,8 @@ end
 bsn_counter = bsn_counter - 1;
 
 %% Selecting Knickzones
-number_of_basins = bsn_counter;
-for i = 1:number_of_basins
+number_of_basins_with_values = bsn_counter;
+for i = 1:number_of_basins_with_values
     number_of_tributaries(i) = length(elev_stored_trimmed_basin{i});
 end
 
@@ -214,6 +215,11 @@ for i = 1:number_of_basins
         fprintf('\nAt basin # of %d: ', number_of_basins);
     end
     
+    if length(chi_stored_trimmed_basin{i}) == 0
+        fprintf('no data stored for this basin, continuing to next\n');
+        continue;
+    end
+        
     chi_stored_current = chi_stored_trimmed_basin{i}; % chi info for each tributary within the stream {i}
     elev_stored_current  = elev_stored_trimmed_basin{i}; % elev info for each tributary within the stream {i}
     eastingUTM11_stored_current  = eastingUTM11_stored_trimmed_basin{i}; % ect..

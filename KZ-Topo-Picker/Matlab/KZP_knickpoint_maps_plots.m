@@ -12,9 +12,16 @@ if KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
             current_stream_id = sprintf('Stream # %d',i);
             str = sprintf('%s', current_stream_id);
 
+            idx_basin = AOI_dbasins_unique(i);
+            AOI_dbasins_current = AOI_dbasins;
+            idx_ncurrent_basin = find(AOI_dbasins_current.Z ~= idx_basin);
+            AOI_dbasins_current.Z(idx_ncurrent_basin) = 0;
+            AOI_DEM_c = crop(AOI_DEM, AOI_dbasins_current, 0);
+            idx=find(AOI_DEM_c.Z == 0);
+            AOI_DEM_c.Z(idx) = NaN;
+            
             % this is a chi-plot of all of the basin streams to be analyzed. we will add
             % kps later
-
             elev_current_stream = elev_stored_trimmed_basin{i} ; % get the elevation data for current basin from (elev_stored_trimmed_basin) <- contains all basins
             chi_current_stream = chi_stored_trimmed_basin{i} ;% get the chi data for current basin from (elev_stored_trimmed_basin) <- contains all basins
 
@@ -101,6 +108,11 @@ if KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
             h2 = plotdz(AOI_STR_all_streams_trunk{i},AOI_DEM);
             set(h2, 'color', 'k', 'Linewidth', 2);
             hold off
+            
+            if length(current_kz_lips_elevation) == 0
+                %no knickpoint found
+                fprintf('i = %d, no knickpoint found\n', i);
+            end
 
         % THE FOLLOWING scales knickpoint magnitude in plot by all knickpoint sizes for the entire DEM.        
         %         %determine max. knickpointsize for plotting
@@ -157,7 +169,10 @@ if KZP_parameters.show_figs == 1 || KZP_parameters.show_figs == 2
             symbolspec_ks_adj = makesymbolspec('line',...
                 {'ks_adj' [prctile([AOI_STR_MS.ks_adj], 5) prctile([AOI_STR_MS.ks_adj], 95)] 'color' jet(6)});
             subplot(2,2,3, 'align')
-            imageschs(AOI_DEM, AOI_DEM, 'caxis', [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], 'colormap',gray,'colorbar',false)
+            imageschs(AOI_DEM, AOI_DEM, 'caxis', ...
+                [nanmin((AOI_DEM_c.Z(:))) ceil(nanmax(AOI_DEM_c.Z(:)))],...
+                'colormap',gray,'colorbar',false);
+            %imageschs(AOI_DEM, AOI_DEM, 'caxis', [floor(min(AOI_DEM(:))) ceil(max(AOI_DEM(:)))], 'colormap',gray,'colorbar',false)
             hold on
             mapshow(AOI_STR_MS,'SymbolSpec',symbolspec_ksn045);
             ylabel('UTM-Northing (m)', 'Fontsize', 12);
